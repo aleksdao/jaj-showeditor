@@ -1,0 +1,56 @@
+<md-content layout-padding>
+  <md-title>
+    <h1>Create Show</h1>
+  </md-title>
+  <div layout="row">
+    <div ng-show="!actionTime">Click the timeline again to add another event</div>
+    <form name="newEventForm" ng-show="actionTime">
+    <label>{{ actionTime }}</label>
+    <md-input-container>
+      <label>Select Action</label>
+      <md-select ng-model="newAction.action">
+        <md-select-header>
+          <span> Action - </span>
+        </md-select-header>
+        <md-option ng-value="action" ng-repeat="(action, actionObj) in actionsObj">{{ actionObj.label }}</md-option>
+      </md-select>
+    </md-input-container>
+    <md-input-container ng-repeat="param in actionsObj[newAction.action].params">
+      <label>{{ param }}</label>
+      <input ng-model="newAction.params[param]">
+    </md-input-container>
+    <md-button ng-click="addAction()" class="md-primary md-raised">Add action</md-button>
+    </form>
+</div>
+</md-content>
+
+<md-divider ng-if="actions"></md-divider>
+<md-content ng-show="actions.length > 0" layout-padding>
+  <md-title><h2>Saved actions</h2></md-title>
+
+  <table ng-table="tableParams" class="table" show-filter="true">
+    <tr ng-repeat="action in actions">
+        <td title="'Time of Action'" sort="'time'">
+            {{action.time}}</td>
+        <td title="'Action'">
+          {{action.actionLabel}}
+        </td>
+    </tr>
+  </table>
+  <form name="createShowForm">
+    <md-input-container>
+      <label>Show Name</label>
+      <input ng-model="show.name" required>
+    </md-input-container>
+    <!-- <label>Show Date</label> -->
+    <md-input-container>
+      <!-- <label>Timepicker Only</label> -->
+      <!-- <md-datepicker ng-model="show.startDate" md-placeholder="Enter Date"></md-datepicker> -->
+      <input mdc-datetime-picker date="true" time="true" type="text" id="time" short-time="true"
+        placeholder="Time"
+        ng-model="show.startTime">
+        {{show.startTime}}
+    </md-input-container>
+    <md-button ng-show="actions.length > 0" ng-click="createShow()" class="md-raised">Create show</md-button>
+  </form>
+</md-content>

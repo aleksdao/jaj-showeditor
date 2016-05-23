@@ -1,0 +1,21 @@
+{
+  "name": "jaj-showeditor",
+  "description": "",
+  "main": "timeline.js",
+  "authors": [
+    "Alex Dao <rahx1t@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ng-table": "^0.8.3",
+    "angular-material-datetimepicker": "^1.4.0"
+  }
+}
