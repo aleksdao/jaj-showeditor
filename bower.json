@@ -16,6 +16,8 @@
   ],
   "dependencies": {
     "ng-table": "^0.8.3",
-    "angular-material-datetimepicker": "^1.4.0"
+    "angular-material-datetimepicker": "^1.4.0",
+    "angular-editable-text": "^1.1.2",
+    "jquery-ui": "^1.11.4"
   }
 }

@@ -60,7 +60,5 @@ function drawSixteenths (ctx, startingX, startingY, numSixteenths) {
 
 
 var canvas = document.getElementById('myCanvas');
-// canvas.addEventListener('mousedown', returnTick, false);
-
 var boundingRect = canvas.getBoundingClientRect();
 drawTimeline();

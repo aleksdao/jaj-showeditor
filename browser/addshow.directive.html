@@ -1,7 +1,19 @@
 <md-content layout-padding>
   <md-title>
-    <h1>Create Show</h1>
+    <h1 editable-text="myTitle">Awesome Sequence</h1>
   </md-title>
+  <md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect>
+    <md-tab ng-repeat="tab in tabs" label="{{ tab.title }}">
+      <canvas id="helloCanvas" width="1000" height="100" style="border:1px solid #000000;"></canvas>
+
+      <div>
+        <br>
+        <md-button class="md-accent md-raised">Load Song</md-button>
+      </div>
+    </md-tab>
+  </md-tabs>
+  <canvas id="myCanvas" width="1000" height="100" style="border:1px solid #000000;"></canvas>
+
   <div layout="row">
     <div ng-show="!actionTime">Click the timeline again to add another event</div>
     <form name="newEventForm" ng-show="actionTime">

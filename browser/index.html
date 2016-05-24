@@ -3,6 +3,9 @@
     <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css">
     <link rel="stylesheet" href="../bower_components/ng-table/dist/ng-table.css">
     <link rel="stylesheet" href="../bower_components/angular-material-datetimepicker/css/material-datetimepicker.css">
+    <link rel="stylesheet" href="../bower_components/angular-editable-text/dist/angular-editable-text.css">
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="../bower_components/momentjs/moment.js"></script>
     <script src="../node_modules/angular/angular.js"></script>
     <script src="../node_modules/angular-material/angular-material.js"></script>
@@ -10,6 +13,7 @@
     <script src="../node_modules/angular-animate/angular-animate.js"></script>
     <script src="../bower_components/ng-table/dist/ng-table.js"></script>
     <script src="../bower_components/angular-material-datetimepicker/js/angular-material-datetimepicker.js"></script>
+    <script src="../bower_components/angular-editable-text/dist/angular-editable-text.js"></script>
 
 
     <script src="main.js"></script>
@@ -19,17 +23,18 @@
   </head>
 <body ng-app="showEditor" ng-controller="AppCtrl">
   <div id="Div1" style=" width: 1000px; overflow:scroll; ">
-    <canvas ng-click="createEvent" id="myCanvas" width="1000" height="100" style="border:1px solid #000000;"></canvas>
+    <!-- <canvas id="myCanvas" width="1000" height="100" style="border:1px solid #000000;"></canvas> -->
   </div>
   <div>
-    <div ng-show="!actionTime && !actionTimes">Click on the musical timeline to get started</div>
-    <add-event ng-show="actionTime || actionTimes" action-time="actionTime"></add-event>
+    <!-- <div ng-show="!actionTime && !actionTimes">Click on the musical timeline to get started</div> -->
+    <!-- <add-event ng-show="actionTime || actionTimes" action-time="actionTime"></add-event> -->
+    <add-event></add-event>
 
 
   </div>
 </body>
 
-<script src="timeline.js"></script>
+<!-- <script src="timeline.js"></script> -->
 
 
 </html>
