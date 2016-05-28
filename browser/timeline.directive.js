@@ -75,8 +75,6 @@ app.directive('timelineDirective', function () {
         }
       })
 
-
-
     }
   }
 })

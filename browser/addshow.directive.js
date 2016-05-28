@@ -16,6 +16,21 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
       var actionLabels = ['Change Color', 'Fade Color To', 'Change Text', 'Reset Screen'];
       var selectLabels = ['Select Action', 'Select Start Time', 'Select Parameters'];
 
+      scope.eventGrouping = {
+        colors: {
+          actions: ['changeColor', 'fadeColorTo'],
+          label: 'Colors'
+        },
+        text: {
+          actions: ['changeText', 'resetScreen'],
+          label: 'Text'
+        },
+        phone: {
+          actions: ['flash', 'vibrate'],
+          label: 'Phone'
+        }
+      }
+
       scope.actionsObj = {
         changeColor: {
           label: 'Change Color',
@@ -32,6 +47,12 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         resetScreen: {
           label: 'Reset Screen',
           params: ['text', 'color', 'backgroundColor']
+        },
+        flash: {
+          label: 'Flash'
+        },
+        vibrate: {
+          label: 'Vibrate'
         }
       };
 
@@ -58,6 +79,7 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         scope.newAction.startIdx = scope.startingIdx;
         scope.newAction.endIdx = scope.lastIdx;
         scope.newAction.activeArrayKey = scope.activeArrayKey;
+        scope.newAction.eventGrouping = scope.activeArrayKey;
         scope.newAction.actionLabel = scope.actionsObj[scope.newAction.action].label;
         console.log(scope.newAction);
         scope.actions.push(scope.newAction);

@@ -4,6 +4,7 @@
   <div layout="row">
     <div ng-show="!activeArrayKey">Click the timeline again to add another event</div>
     <form name="newEventForm" ng-show="activeArrayKey">
+
     <label>{{ actionTime }}</label>
     <md-input-container>
       <label>Select Action</label>
@@ -11,7 +12,7 @@
         <md-select-header>
           <span> Action - </span>
         </md-select-header>
-        <md-option ng-value="action" ng-repeat="(action, actionObj) in actionsObj">{{ actionObj.label }}</md-option>
+        <md-option ng-value="action" ng-repeat="action in eventGrouping[activeArrayKey].actions">{{ actionsObj[action].label }}</md-option>
       </md-select>
     </md-input-container>
     <md-input-container ng-repeat="param in actionsObj[newAction.action].params">
@@ -34,6 +35,9 @@
         </td>
         <td title="'End Time'">
           {{action.endTime}}
+        </td>
+        <td title="'Event Grouping'">
+          {{eventGrouping[action.eventGrouping].label}}
         </td>
         <td title="'Action'">
           {{action.actionLabel}}
