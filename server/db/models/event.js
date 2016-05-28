@@ -1,7 +1,10 @@
 var mongoose = require('mongoose');
 
 var eventSchema = mongoose.Schema({
-  time: {
+  startTime: {
+    type: String
+  },
+  endTime: {
     type: String
   },
   action: {

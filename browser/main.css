@@ -1,0 +1,30 @@
+hr {
+  width: 100px;
+  /*height: 10px;*/
+}
+
+span.ruler {
+  height: 1px;
+}
+
+div.ruler1 {
+  /*height: 1px;*/
+  length: 100px;
+  border-top: 1px;
+}
+
+timeline-directive.selected1 {
+  background-color: rgb(89, 226, 168);
+}
+
+timeline-directive.selected2 {
+  background-color: #CAFCFC;
+}
+
+timeline-directive.selected3 {
+  background-color: #FCCACA;
+}
+
+timeline-directive.not-selected {
+  background-color: white;
+}

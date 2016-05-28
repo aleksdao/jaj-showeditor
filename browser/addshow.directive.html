@@ -1,22 +1,9 @@
-<md-content layout-padding>
-  <md-title>
-    <h1 editable-text="myTitle">Awesome Sequence</h1>
-  </md-title>
-  <md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect>
-    <md-tab ng-repeat="tab in tabs" label="{{ tab.title }}">
-      <canvas id="helloCanvas" width="1000" height="100" style="border:1px solid #000000;"></canvas>
+  <md-content>
 
-      <div>
-        <br>
-        <md-button class="md-accent md-raised">Load Song</md-button>
-      </div>
-    </md-tab>
-  </md-tabs>
-  <canvas id="myCanvas" width="1000" height="100" style="border:1px solid #000000;"></canvas>
 
   <div layout="row">
-    <div ng-show="!actionTime">Click the timeline again to add another event</div>
-    <form name="newEventForm" ng-show="actionTime">
+    <div ng-show="!activeArrayKey">Click the timeline again to add another event</div>
+    <form name="newEventForm" ng-show="activeArrayKey">
     <label>{{ actionTime }}</label>
     <md-input-container>
       <label>Select Action</label>
@@ -42,11 +29,16 @@
 
   <table ng-table="tableParams" class="table" show-filter="true">
     <tr ng-repeat="action in actions">
-        <td title="'Time of Action'" sort="'time'">
-            {{action.time}}</td>
+        <td title="'Start time Action'">
+          {{action.startTime}}
+        </td>
+        <td title="'End Time'">
+          {{action.endTime}}
+        </td>
         <td title="'Action'">
           {{action.actionLabel}}
         </td>
+
     </tr>
   </table>
   <form name="createShowForm">
