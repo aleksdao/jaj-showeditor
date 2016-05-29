@@ -50,9 +50,23 @@ app.controller('AppCtrl', function ($scope) {
   }
 
 
-  $scope.changeResolution = function (resolution) {
-    console.log(resolution);
-    resolution ? $scope.data.notesPerMeasure = 4 : $scope.data.notesPerMeasure = 8;
+  $scope.changeResolution = function (qtrResolution) {
+    // console.log(resolution);
+    if (qtrResolution) {
+      $scope.data.notesPerMeasure = 4
+      if ($scope.startingIdx) {
+        $scope.startingIdx = ($scope.startingIdx - 1) / 2;
+        $scope.lastIdx = ($scope.lastIdx - 1) / 2;
+      }
+    }
+    else {
+      $scope.data.notesPerMeasure = 8;
+      if ($scope.startingIdx) {
+        $scope.startingIdx = $scope.startingIdx * 2 + 1;
+        $scope.lastIdx = $scope.lastIdx * 2 + 1;
+      }
+    }
+    console.log($scope.startingIdx, $scope.lastIdx);
   }
 
   $scope.convertToMusicalTime = function (startIdx, endIdx) {

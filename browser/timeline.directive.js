@@ -41,20 +41,10 @@ app.directive('timelineDirective', function () {
       scope.$watch('data.notesPerMeasure', function (newValue, oldValue) {
         // console.log(newValue);
         scope.data.notesPerMeasure = newValue;
-        if (scope.data.notesPerMeasure === 4) {
-          // console.log(scope.data.notesPerMeasure);
-
-          scope.width = quarterWidth + 1;
-          // scope.leftBorder = borderThickness;
-
-        }
-        else {
-          scope.width = quarterWidth / 2;
-          // scope.leftBorder = borderThickness / 2;
-
-        }
-
         if (scope.data.notesPerMeasure === 8) {
+          scope.width = quarterWidth / 2;
+
+          // console.log(scope.$index)
           if (scope.$index % 8 === 0) {
             scope.heightKey = lineHeights.bar;
           }
@@ -66,6 +56,8 @@ app.directive('timelineDirective', function () {
           }
         }
         else {
+          scope.width = quarterWidth + 1;
+
           if (scope.$index % 4 === 0) {
             scope.heightKey = lineHeights.bar;
           }
