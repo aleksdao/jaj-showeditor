@@ -12,17 +12,17 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
     link: function (scope, elem, attrs) {
       // scope.actionsObj = {};
 
-      scope.actions = ['changeColor', 'fadeColorTo', 'changeText', 'resetScreen'];
+      scope.actions = ['changeColorTo', 'fadeColorTo', 'changeText', 'resetScreen'];
       var actionLabels = ['Change Color', 'Fade Color To', 'Change Text', 'Reset Screen'];
       var selectLabels = ['Select Action', 'Select Start Time', 'Select Parameters'];
 
       scope.eventGrouping = {
         colors: {
-          actions: ['changeColor', 'fadeColorTo'],
+          actions: ['changeColorTo', 'fadeColorTo'],
           label: 'Colors'
         },
         text: {
-          actions: ['changeText', 'resetScreen'],
+          actions: ['changeTextTo', 'resetScreen'],
           label: 'Text'
         },
         phone: {
@@ -32,7 +32,7 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
       }
 
       scope.actionsObj = {
-        changeColor: {
+        changeColorTo: {
           label: 'Change Color',
           params: ['color', 'backgroundColor']
         },
@@ -57,7 +57,7 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
       };
 
       var actionParams = {
-        changeColor: ['color', 'backgroundColor'],
+        changeColorTo: ['color', 'backgroundColor'],
         fadeColorTo: ['color', 'backgroundColor', 'transitionTime'],
         changeText: ['text', 'color', 'target'],
         resetScreen: ['text', 'color', 'backgroundColor']
@@ -118,6 +118,10 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         console.log(scope.show);
         ShowFactory.createShow(scope.show)
           .then(function (show) {
+            scope.show = undefined;
+            scope.savedTimelines = undefined;
+            scope.show = undefined;
+            scope.activeArrayKey = undefined;
             console.log('created show', show);
           })
       }

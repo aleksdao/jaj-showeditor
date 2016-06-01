@@ -117,6 +117,8 @@ app.controller('EditShowCtrl', function ($scope, NgTableParams, ShowFactory) {
     }
   }
 
+  /////// OLD CANVAS CODE ABOVE
+
   $scope.actions = ['changeColor', 'fadeColorTo', 'changeText', 'resetScreen'];
   var actionLabels = ['Change Color', 'Fade Color To', 'Change Text', 'Reset Screen'];
   var selectLabels = ['Select Action', 'Select Start Time', 'Select Parameters'];
@@ -172,6 +174,13 @@ app.controller('EditShowCtrl', function ($scope, NgTableParams, ShowFactory) {
     ShowFactory.createShow($scope.show)
       .then(function (show) {
         console.log('created show', show);
+      })
+  }
+
+  $scope.getShow = function () {
+    ShowFactory.getShow(show._id)
+      .then(function (_show) {
+        $scope.show = show;
       })
   }
 
