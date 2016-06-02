@@ -14,7 +14,6 @@ app.directive('timelineDirective', function () {
       if (scope.data.notesPerMeasure === 8) {
         scope.width = quarterWidth / 2;
 
-        // console.log(scope.$index)
         if (scope.$index % 8 === 0) {
           scope.heightKey = lineHeights.bar;
         }
@@ -39,7 +38,7 @@ app.directive('timelineDirective', function () {
 
       // console.log(scope.data.notesPerMeasure);
       scope.$watch('data.notesPerMeasure', function (newValue, oldValue) {
-        // console.log(newValue);
+        console.log(newValue);
         scope.data.notesPerMeasure = newValue;
         if (scope.data.notesPerMeasure === 8) {
           scope.width = quarterWidth / 2;

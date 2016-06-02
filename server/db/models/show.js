@@ -24,6 +24,9 @@ var showSchema = new mongoose.Schema({
   },
   events: {
     type: [eventSchema]
+  },
+  savedTimelines: {
+    type: Object
   }
 });
 

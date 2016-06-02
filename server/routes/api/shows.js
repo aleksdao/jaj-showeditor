@@ -9,8 +9,15 @@ router.get('/', function (req, res, next) {
   Show.find()
     .then(function (shows) {
       res.send(shows);
-    })
-})
+    }, next);
+});
+
+router.get('/:id', function (req, res, next) {
+  Show.findById(req.params.id)
+    .then(function (show) {
+      res.send(show);
+    }, next);
+});
 
 router.post('/', function (req, res, next) {
   console.log(req.body.show)
@@ -18,5 +25,5 @@ router.post('/', function (req, res, next) {
     .then(function (show) {
       console.log(show);
       res.send(show);
-    })
-})
+    }, next);
+});

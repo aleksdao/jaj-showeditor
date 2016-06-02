@@ -13,11 +13,19 @@ app.factory("ShowFactory", function ($http) {
       })
   }
 
-  factory.getShow = function (show) {
-    return $http.get('/api/shows/' + show._id)
+  factory.getShow = function (id) {
+    return $http.get('/api/shows/' + id)
       .then(function (response) {
         var show = response.data;
         return show;
+      })
+  }
+
+  factory.getShows = function () {
+    return $http.get('/api/shows')
+      .then(function (response) {
+        var shows = response.data;
+        return shows;
       })
   }
 
@@ -39,6 +47,46 @@ app.factory("ShowFactory", function ($http) {
     return idx;
 
   }
+
+  factory.convertToMusicalTime = function (startIdx, endIdx, qtrResolutionBool) {
+    var configObj = {
+      start: {
+        idx: startIdx,
+        scopeVar: 'actionTime'
+      },
+      end: {
+        idx: endIdx,
+        scopeVar: 'actionEndTime'
+      }
+    }
+    var toReturn = {};
+    var sixteenths;
+    var quarters;
+    var measures;
+    var start;
+    var end;
+    for (var key in configObj) {
+      var leftoverIdx = configObj[key].idx;
+      if (qtrResolutionBool) {
+        measures = Math.floor((configObj[key].idx) / 4);
+        quarters = (configObj[key].idx) - (measures * 4);
+        sixteenths = 0;
+      }
+      else {
+        measures = Math.floor((configObj[key].idx) / 8);
+        leftoverIdx = leftoverIdx - (measures * 8);
+        quarters = Math.floor(leftoverIdx / 2);
+        leftoverIdx = leftoverIdx - quarters * 2;
+        sixteenths = leftoverIdx * 2;
+      }
+      if (key === 'start')
+        toReturn.eventStartTime = measures + ':' + quarters + ':' + sixteenths;
+      else {
+        toReturn.eventEndTime = measures + ':' + quarters + ':' + sixteenths;
+      }
+    }
+    return toReturn;
+  };
 
 
   return factory;

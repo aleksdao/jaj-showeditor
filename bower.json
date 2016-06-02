@@ -19,6 +19,7 @@
     "angular-material-datetimepicker": "^1.4.0",
     "angular-editable-text": "^1.1.2",
     "jquery-ui": "^1.11.4",
-    "angular-ui-router": "^0.3.0"
+    "angular-ui-router": "^0.3.0",
+    "md-color-picker": "^0.2.6"
   }
 }

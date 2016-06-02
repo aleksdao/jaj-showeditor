@@ -7,6 +7,9 @@ var eventSchema = mongoose.Schema({
   endTime: {
     type: String
   },
+  eventGrouping: {
+    type: String,
+  },
   action: {
     type: String,
     enum: ['fadeColorTo', 'changeColorTo', 'changeTextTo', 'resetScreen', 'vibrate', 'flash']
