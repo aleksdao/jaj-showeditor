@@ -14,7 +14,7 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         { title: 'Preview'}
       ];
 
-      scope.eventGrouping = {
+      scope.eventGroupings = {
         colors: {
           actions: ['changeColorTo', 'fadeColorTo'],
           label: 'Colors'
@@ -72,19 +72,19 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         console.log(scope.startingIdx, scope.lastIdx);
         if (!scope.show.events) scope.show.events = [];
 
-        scope.newAction.startTime = scope.eventStartTime;
-        scope.newAction.endTime = scope.eventEndTime;
-        scope.newAction.startIdx = scope.startingIdx;
-        scope.newAction.endIdx = scope.lastIdx;
-        scope.newAction.activeArrayKey = scope.activeArrayKey;
-        scope.newAction.eventGrouping = scope.activeArrayKey;
-        scope.newAction.actionLabel = scope.actionsObj[scope.newAction.action].label;
-        console.log(scope.newAction);
-        scope.show.events.push(scope.newAction);
-        scope.highlightSaved(scope.newAction);
+        scope.newEvent.startTime = scope.eventStartTime;
+        scope.newEvent.endTime = scope.eventEndTime;
+        scope.newEvent.startIdx = scope.startingIdx;
+        scope.newEvent.endIdx = scope.lastIdx;
+        scope.newEvent.activeArrayKey = scope.activeArrayKey;
+        scope.newEvent.eventGrouping = scope.activeArrayKey;
+        scope.newEvent.actionLabel = scope.actionsObj[scope.newEvent.action].label;
+        console.log(scope.newEvent);
+        scope.show.events.push(scope.newEvent);
+        scope.highlightSaved(scope.newEvent);
         scope.eventStartTime = null;
         scope.eventEndTime = null;
-        scope.newAction = null;
+        scope.newEvent = null;
 
 
       }
@@ -122,18 +122,18 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
 
 
 
-      scope.highlightSaved = function (newAction) {
-        // console.log(newAction);
-        if (!scope.show.savedTimelines[newAction.activeArrayKey]) {
-          scope.show.savedTimelines[newAction.activeArrayKey] = {
+      scope.highlightSaved = function (newEvent) {
+        // console.log(newEvent);
+        if (!scope.show.savedTimelines[newEvent.activeArrayKey]) {
+          scope.show.savedTimelines[newEvent.activeArrayKey] = {
             savedEvents: [],
             savedIdx: []
           }
         }
-        scope.show.savedTimelines[newAction.activeArrayKey].savedEvents.push(newAction);
-        for (var i = newAction.startIdx; i <= newAction.endIdx; i++) {
+        scope.show.savedTimelines[newEvent.activeArrayKey].savedEvents.push(newEvent);
+        for (var i = newEvent.startIdx; i <= newEvent.endIdx; i++) {
           console.log(i);
-          scope.show.savedTimelines[newAction.activeArrayKey].savedIdx.push(i);
+          scope.show.savedTimelines[newEvent.activeArrayKey].savedIdx.push(i);
         }
         console.log(scope.show.savedTimelines);
       }
@@ -173,6 +173,49 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         console.log(scope.startingIdx, scope.lastIdx);
       }
 
+      scope.getDivHeight = function (idx) {
+        var lineHeights = {
+          bar: 32,
+          quarter: 8,
+          eighths: 4
+        }
+
+        var quarterWidth = 32;
+
+        if (scope.data.notesPerMeasure === 8) {
+          scope.width = quarterWidth / 2;
+
+          if (idx % 8 === 0) {
+            // scope.heightKey = lineHeights.bar;
+            return lineHeights.bar;
+          }
+          else if (idx % 2 === 0) {
+            // scope.heightKey = lineHeights.quarter;
+            return lineHeights.quarter;
+          }
+          else {
+            // scope.heightKey = lineHeights.eighths;
+            return lineHeights.eighths;
+          }
+        }
+        else {
+          scope.width = quarterWidth + 1;
+
+          if (scope.$index % 4 === 0) {
+            scope.heightKey = lineHeights.bar;
+          }
+          else {
+            scope.heightKey = lineHeights.quarter;
+          }
+        }
+      }
+
+
+// if eventGrouping === 'colors'
+// show.event
+
+
+      // var borderThickness = 2;
 
 
 

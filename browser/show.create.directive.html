@@ -6,17 +6,17 @@
     <label>{{ actionTime }}</label>
     <md-input-container>
       <label>Select Action</label>
-      <md-select ng-model="newAction.action">
+      <md-select ng-model="newEvent.action">
         <md-select-header>
           <span> Action - </span>
         </md-select-header>
-        <md-option ng-value="action" ng-repeat="action in eventGrouping[activeArrayKey].actions">{{ actionsObj[action].label }}</md-option>
+        <md-option ng-value="action" ng-repeat="action in eventGroupings[activeArrayKey].actions">{{ actionsObj[action].label }}</md-option>
       </md-select>
     </md-input-container>
     <div  md-color-picker
           ng-show="activeArrayKey === 'colors'"
-          ng-repeat="param in actionsObj[newAction.action].params"
-          ng-model="newAction.params[param]"
+          ng-repeat="param in actionsObj[newEvent.action].params"
+          ng-model="newEvent.params[param]"
           label="Choose a {{param}}"
           icon="brush"
           default="f00"
@@ -24,9 +24,9 @@
           md-color-history="false">
     </div>
     <md-input-container ng-show="activeArrayKey !== 'colors'"
-    ng-repeat="param in actionsObj[newAction.action].params">
+    ng-repeat="param in actionsObj[newEvent.action].params">
       <label>{{ param }}</label>
-      <input ng-model="newAction.params[param]">
+      <input ng-model="newEvent.params[param]">
     </md-input-container>
     <md-button ng-click="addAction()" class="md-primary md-raised">Add action</md-button>
     </form>
@@ -46,7 +46,7 @@
           {{event.endTime}}
         </td>
         <td title="'Event Grouping'">
-          {{eventGrouping[event.eventGrouping].label}}
+          {{eventGroupings[event.eventGroupings].label}}
         </td>
         <td title="'Action'">
           {{actionsObj[event.action].label}}
