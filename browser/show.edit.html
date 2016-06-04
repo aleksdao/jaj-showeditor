@@ -1,0 +1,30 @@
+{{show}}
+<md-content layout-padding>
+  <md-title>
+    <h1 class="md-display-2" editable-text="show.name"></h1>
+  </md-title>
+  <h3 class="md-headline">{{ show.settings.bpm }} BPM</h3>
+  <div>
+    <md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect md-dynamic-height>
+      <md-tab ng-repeat="tab in tabs" label="{{ tab.title }}"></md-tab>
+    </md-tabs>
+  </div>
+</md-content>
+<md-switch ng-disabled="false" ng-model="isQuarterResolution" ng-change="changeToResolution(isQuarterResolution)">{{ isQuarterResolution ? "quarter note" : "eighth note" }}</md-switch>
+<md-content flex>
+  <div layout="row" ng-repeat="(eventGrouping, array) in timelinesArray">
+    <!-- <div style="height:33px" ng-repeat="line in array track by $index" ng-click="selectIdx($index, eventGrouping)"
+      ng-class="{ 'selected1' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'colors' && eventGrouping === 'colors') || (show.savedTimelines[eventGrouping].savedIdx.indexOf($index) >= 0 && eventGrouping === 'colors'),
+      'selected2' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'text' && eventGrouping === 'text') || (show.savedTimelines[eventGrouping].savedIdx.indexOf($index) >= 0 && eventGrouping === 'text'),
+      'selected3' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'phone' && eventGrouping === 'phone') || (show.savedTimelines[eventGrouping].savedIdx.indexOf($index) >= 0 && eventGrouping === 'phone') }"
+      ng-style="($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'colors' && eventGrouping === 'colors') && {'backgroundColor': newEvent.params.color}"> -->
+      <div style="height:33px" ng-repeat="line in array track by $index" ng-click="selectIdx($index, eventGrouping)" ng-class="{ 'selected1' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'colors' && eventGrouping === 'colors') || ((isQuarterResolution ? show.savedTimelines[eventGrouping].savedQuartersIdx[$index] : show.savedTimelines[eventGrouping].savedEighthsIdx[$index]) && eventGrouping === 'colors'),
+        'selected2' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'text' && eventGrouping === 'text') || ((isQuarterResolution ? show.savedTimelines[eventGrouping].savedQuartersIdx.indexOf($index) >= 0 : show.savedTimelines[eventGrouping].savedEighthsIdx.indexOf($index) >= 0) && eventGrouping === 'text'),
+        'selected3' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'phone' && eventGrouping === 'phone') || ((isQuarterResolution ? show.savedTimelines[eventGrouping].savedQuartersIdx.indexOf($index) >= 0 : show.savedTimelines[eventGrouping].savedEighthsIdx.indexOf($index) >= 0) && eventGrouping === 'phone') }"
+        ng-style="(($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'colors' && eventGrouping === 'colors') || ((isQuarterResolution ? show.savedTimelines[eventGrouping].savedQuartersIdx[$index] : show.savedTimelines[eventGrouping].savedEighthsIdx[$index]) && eventGrouping === 'colors')) && {'backgroundColor': newEvent.params.color || isQuarterResolution ? show.savedTimelines.colors.savedQuartersIdx[$index] : show.savedTimelines.colors.savedEighthsIdx[$index]}">
+        <timeline-directive index="{{$index}}" event-grouping="{{eventGrouping}}" data="data" notes-per-measure="{{notesPerMeasure}}" height-key="{{getDivHeight($index)}}" width-key="16"></timeline-directive>
+      </div>
+  </div>
+</md-content>
+{{eventStartTime}} || {{eventEndTime}}
+<add-event></add-event>

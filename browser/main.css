@@ -13,15 +13,15 @@ div.ruler1 {
   border-top: 1px;
 }
 
-timeline-directive.selected1 {
+div.selected1 {
   background-color: rgb(89, 226, 168);
 }
 
-timeline-directive.selected2 {
+div.selected2 {
   background-color: #CAFCFC;
 }
 
-timeline-directive.selected3 {
+div.selected3 {
   background-color: #FCCACA;
 }
 

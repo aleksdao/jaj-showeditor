@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../bower_components/ng-table/dist/ng-table.css">
     <link rel="stylesheet" href="../bower_components/angular-material-datetimepicker/css/material-datetimepicker.css">
     <link rel="stylesheet" href="../bower_components/angular-editable-text/dist/angular-editable-text.css">
+    <link rel="stylesheet" href="../bower_components/md-color-picker/dist/mdColorPicker.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
@@ -18,47 +19,33 @@
     <script src="../bower_components/ng-table/dist/ng-table.js"></script>
     <script src="../bower_components/angular-material-datetimepicker/js/angular-material-datetimepicker.js"></script>
     <script src="../bower_components/angular-editable-text/dist/angular-editable-text.js"></script>
+    <script src="../bower_components/tinycolor/dist/tinycolor-min.js"></script>
+    <script src="../bower_components/md-color-picker/dist/mdColorPicker.min.js"></script>
 
 
     <script src="main.js"></script>
     <script src="app.controller.js"></script>
-    <script src="show.edit.state.js"></script>
-    <script src="addshow.directive.js"></script>
+    <script src="show.states.js"></script>
+    <script src="show.create.directive.js"></script>
     <script src="show.factory.js"></script>
-    <script src="edit.show.controller.js"></script>
+    <!-- <script src="edit.show.controller.js"></script> -->
     <script src="timeline.directive.js"></script>
   </head>
 <body ng-app="showEditor" ng-controller="AppCtrl">
   <!-- <span class="ruler"></span> -->
-
-  <!-- <hr> -->
-  <span style="border-top:3px solid black;width:5px"></span>
-  <md-content layout-padding>
-    <md-title>
-      <h1 class="md-display-2" editable-text="myTitle"></h1>
-    </md-title>
-    <h3 class="md-headline">90 BPM</h3>
-    <div>
-      <md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect md-dynamic-height>
-        <md-tab ng-repeat="tab in tabs" label="{{ tab.title }}">
-        </md-tab>
-      </md-tabs>
-    </div>
-
-
-
-  </md-content>
-  <md-switch ng-model="data.qtrResolution" ng-change="changeResolution(data.qtrResolution)">{{ data.qtrResolution ? "quarter note" : "eighth note" }}</md-switch>
-  <md-content flex>
-    <div layout="row" ng-repeat="(eventGrouping, array) in timelinesArray">
-      <timeline-directive ng-click="selectIdx($index, eventGrouping)" ng-class="{ 'selected1' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'colors' && eventGrouping === 'colors') || (savedTimelines[eventGrouping].savedIdx.indexOf($index) >= 0 && eventGrouping === 'colors'), 'selected2' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'text' && eventGrouping === 'text') || (savedTimelines[eventGrouping].savedIdx.indexOf($index) >= 0 && eventGrouping === 'text'), 'selected3' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'phone' && eventGrouping === 'phone') || (savedTimelines[eventGrouping].savedIdx.indexOf($index) >= 0 && eventGrouping === 'phone') }" ng-repeat="line in array track by $index" ng-disabled="savedTimelines[eventGrouping].savedIdx.indexOf($index) >= 0"></timeline-directive>
-    </div>
-    {{eventStartTime}} || {{eventEndTime}}
-    <add-event></add-event>
-
-  </md-content>
-
+  <div>
+    <h3>Create Show</h3>
+    <md-button class="md-raised" ui-sref="createShow">Create Show</md-button>
   </div>
+  <div>
+    <h3>Edit Shows</h3>
+    <md-button class="md-raised" ng-repeat="show in shows" ui-sref="editShow({ id: show._id })">{{ show.name }} Show</md-button>
+  </div>
+  <md-divider></md-divider>
+
+  <ui-view></ui-view>
+  <!-- <hr> -->
+
 </body>
 
 
