@@ -24,8 +24,8 @@ app.use(function(req, res, next) {
 
 app.use('/api', require('./routes/api'));
 
-app.get('/', function (req, res, next) {
-  res.sendFile(path.join(__dirname, '../../browser/index.html'));
+app.get('/*', function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../browser/index.html'));
 })
 
 

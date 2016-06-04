@@ -88,6 +88,21 @@ app.factory("ShowFactory", function ($http) {
     return toReturn;
   };
 
+  factory.initializeShow = function () {
+    var show = {};
+    var eventGroupings = ['colors', 'text', 'phone'];
+    show.events = [];
+    show.savedTimelines = {};
+    eventGroupings.forEach(function (eventGrouping) {
+      show.savedTimelines[eventGrouping] = {
+        savedEvents: [],
+        savedEighthsIdx: [],
+        savedQuartersIdx: []
+      }
+    })
+    return show;
+  }
+
 
   return factory;
 })

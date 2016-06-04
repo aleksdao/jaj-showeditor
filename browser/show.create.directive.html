@@ -22,7 +22,7 @@
           default="f00"
           md-color-generic-palette="false"
           md-color-history="false">
-    </div>
+    </div> {{newEvent.params.color}}
     <md-input-container ng-show="activeArrayKey !== 'colors'"
     ng-repeat="param in actionsObj[newEvent.action].params">
       <label>{{ param }}</label>
@@ -40,7 +40,7 @@
   <table ng-table="tableParams" class="table" show-filter="true">
     <tr ng-repeat="event in show.events">
         <td title="'Start time Action'">
-          {{event.startTime}}
+          {{event.time}}
         </td>
         <td title="'End Time'">
           {{event.endTime}}

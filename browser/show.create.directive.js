@@ -8,6 +8,7 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
     // },
     link: function (scope, elem, attrs) {
       // scope.actionsObj = {};
+      // if (!scope.show) scope.show = {};
       scope.data.notesPerMeasure = 8;
       scope.tabs = [
         { title: 'Edit' },
@@ -60,7 +61,8 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         changeText: ['text', 'color', 'target'],
         resetScreen: ['text', 'color', 'backgroundColor']
       };
-      if (!scope.show) scope.show = {};
+
+
       if (!scope.show.events)
         scope.show.events = [];
 
@@ -69,10 +71,13 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
       self.tableParams = new NgTableParams({}, { dataset: data });
 
       scope.addAction = function () {
-        console.log(scope.startingIdx, scope.lastIdx);
-        if (!scope.show.events) scope.show.events = [];
 
-        scope.newEvent.startTime = scope.eventStartTime;
+        if (!scope.show.events)
+          scope.show.events = [];
+
+        console.log(scope.startingIdx, scope.lastIdx);
+
+        scope.newEvent.time = scope.eventStartTime;
         scope.newEvent.endTime = scope.eventEndTime;
         scope.newEvent.startIdx = scope.startingIdx;
         scope.newEvent.endIdx = scope.lastIdx;
@@ -126,8 +131,7 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
 
       }
 
-      if (!scope.show.savedTimelines)
-        scope.show.savedTimelines = {};
+
 
       scope.convertToQuarters = function (idx, isQuarterResolution) {
         if (isQuarterResolution) {
@@ -141,6 +145,10 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
 
       scope.highlightSaved = function (newEvent) {
         // console.log(newEvent);
+        if (!scope.show.savedTimelines)
+          scope.show.savedTimelines = {};
+
+
         if (!scope.show.savedTimelines[newEvent.activeArrayKey]) {
           // if (newEvent.activeArrayKey === 'colors') {
           //   scope.show.savedTimelines[newEvent.activeArrayKey] = {
@@ -192,10 +200,14 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         console.log(scope.show);
         ShowFactory.createShow(scope.show)
           .then(function (show) {
-            scope.show = undefined;
-            scope.savedTimelines = undefined;
-            scope.show = undefined;
-            scope.activeArrayKey = undefined;
+
+            //DO WE RESET OR WHAT HAPPENS AFTER USER CREATES SHOW
+            // scope.show = undefined;
+            // scope.savedTimelines = undefined;
+            // scope.show = undefined;
+            // scope.activeArrayKey = undefined;
+
+
             console.log('created show', show);
           })
       }
