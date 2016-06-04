@@ -3,6 +3,11 @@ hr {
   /*height: 10px;*/
 }
 
+.timelines {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 span.ruler {
   height: 1px;
 }

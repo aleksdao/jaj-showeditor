@@ -12,7 +12,7 @@
 </md-content>
 <md-switch ng-disabled="false" ng-model="isQuarterResolution" ng-change="changeToResolution(isQuarterResolution)">{{ isQuarterResolution ? "quarter note" : "eighth note" }}</md-switch>
 <md-content flex>
-  <div layout="row" ng-repeat="(eventGrouping, array) in timelinesArray">
+  <div class="timelines" layout="row" ng-repeat="(eventGrouping, array) in timelinesArray">
     <!-- <div style="height:33px" ng-repeat="line in array track by $index" ng-click="selectIdx($index, eventGrouping)"
       ng-class="{ 'selected1' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'colors' && eventGrouping === 'colors') || (show.savedTimelines[eventGrouping].savedIdx.indexOf($index) >= 0 && eventGrouping === 'colors'),
       'selected2' : ($index >= startingIdx && $index <= lastIdx && activeArrayKey === 'text' && eventGrouping === 'text') || (show.savedTimelines[eventGrouping].savedIdx.indexOf($index) >= 0 && eventGrouping === 'text'),
