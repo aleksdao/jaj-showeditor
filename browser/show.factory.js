@@ -29,7 +29,7 @@ app.factory("ShowFactory", function ($http) {
       })
   }
 
-  factory.convertToIdx = function (time, resolution) {
+  factory.convertToIdx = function (time, isQuarterResolution) {
     var idx = 0;
     var nums = time.split(':');
     var musicalTime = {
@@ -37,7 +37,7 @@ app.factory("ShowFactory", function ($http) {
       quarters: Number(nums[1]),
       sixteenths: Number(nums[2]),
     }
-    if (resolution === 'quarter') {
+    if (isQuarterResolution) {
       idx += measures * 4 + quarters; // not accounting for sixteenths yet
     }
     else {
@@ -48,7 +48,7 @@ app.factory("ShowFactory", function ($http) {
 
   }
 
-  factory.convertToMusicalTime = function (startIdx, endIdx, qtrResolutionBool) {
+  factory.convertToMusicalTime = function (startIdx, endIdx, resolution) {
     var configObj = {
       start: {
         idx: startIdx,
@@ -67,7 +67,7 @@ app.factory("ShowFactory", function ($http) {
     var end;
     for (var key in configObj) {
       var leftoverIdx = configObj[key].idx;
-      if (qtrResolutionBool) {
+      if (resolution === 'quarter') {
         measures = Math.floor((configObj[key].idx) / 4);
         quarters = (configObj[key].idx) - (measures * 4);
         sixteenths = 0;

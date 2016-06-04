@@ -8,7 +8,7 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
     // },
     link: function (scope, elem, attrs) {
       // scope.actionsObj = {};
-
+      scope.data.notesPerMeasure = 8;
       scope.tabs = [
         { title: 'Edit' },
         { title: 'Preview'}
@@ -82,11 +82,20 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         console.log(scope.newEvent);
         scope.show.events.push(scope.newEvent);
         scope.highlightSaved(scope.newEvent);
-        scope.eventStartTime = null;
-        scope.eventEndTime = null;
-        scope.newEvent = null;
+        resetEvent();
+      }
 
+      function resetEvent () {
+        scope.eventStartTime = undefined;
+        scope.eventEndTime = undefined;
+        scope.newEvent = undefined;
 
+        //better to reset startingIdx, lastIdx to undefined rather
+        //than null because null seems to get treated like 0 when used
+        //in >= and <=
+
+        scope.startingIdx = undefined;
+        scope.lastIdx = undefined;
       }
 
       scope.selectIdx = function (idx, arrayKey) {
@@ -120,20 +129,61 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
       if (!scope.show.savedTimelines)
         scope.show.savedTimelines = {};
 
+      scope.convertToQuarters = function (idx, isQuarterResolution) {
+        if (isQuarterResolution) {
+          return idx * 2 + 1;
+        }
+        else {
+          return (idx - 1) / 2;
+        }
+      }
 
 
       scope.highlightSaved = function (newEvent) {
         // console.log(newEvent);
         if (!scope.show.savedTimelines[newEvent.activeArrayKey]) {
+          // if (newEvent.activeArrayKey === 'colors') {
+          //   scope.show.savedTimelines[newEvent.activeArrayKey] = {
+          //     savedEvents: [],
+          //     savedIdx: {}
+          //   }
+          // }
+          // else {
           scope.show.savedTimelines[newEvent.activeArrayKey] = {
             savedEvents: [],
-            savedIdx: []
+            savedEighthsIdx: [],
+            savedQuartersIdx: []
           }
+          // }
         }
         scope.show.savedTimelines[newEvent.activeArrayKey].savedEvents.push(newEvent);
         for (var i = newEvent.startIdx; i <= newEvent.endIdx; i++) {
           console.log(i);
-          scope.show.savedTimelines[newEvent.activeArrayKey].savedIdx.push(i);
+          if (newEvent.activeArrayKey === 'colors') {
+            if (scope.isQuarterResolution) {
+              var eighthIdx = scope.convertToQuarters(i, true)
+              scope.show.savedTimelines.colors.savedQuartersIdx[i] = newEvent.params.color;
+              scope.show.savedTimelines.colors.savedEighthsIdx[eighthIdx] = newEvent.params.color;
+            }
+            else {
+              var quarterIdx = scope.convertToQuarters(i, false)
+              scope.show.savedTimelines.colors.savedEighthsIdx[i] = newEvent.params.color;
+              scope.show.savedTimelines.colors.savedQuartersIdx[quarterIdx] = newEvent.params.color;
+            }
+          }
+          else {
+            if (scope.isQuarterResolution) {
+              var eighthIdx = scope.convertToQuarters(i, true)
+              scope.show.savedTimelines[newEvent.activeArrayKey].savedQuartersIdx.push(i);
+              scope.show.savedTimelines[newEvent.activeArrayKey].savedEighthsIdx.push(eighthIdx);
+
+            }
+            else {
+              var quarterIdx = scope.convertToQuarters(i, false)
+              scope.show.savedTimelines[newEvent.activeArrayKey].savedEighthsIdx.push(i);
+              scope.show.savedTimelines[newEvent.activeArrayKey].savedQuartersIdx.push(quarterIdx);
+            }
+          }
         }
         console.log(scope.show.savedTimelines);
       }
@@ -151,23 +201,27 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
       }
 
 
+      scope.eventAddedToShow = function () {
+
+      }
+
       // NEED TO REVISIT. ACCOUNT FOR EIGHTHTS SWITCHING TO QTR NOTES
       // NOT BEING ACCURATELY MEASURED
 
-      scope.changeResolution = function (qtrResolution) {
+      scope.changeToResolution = function (isQuarterResolution) {
         // console.log(resolution);
-        if (qtrResolution) {
+        if (isQuarterResolution) {
           scope.data.notesPerMeasure = 4
           if (scope.startingIdx) {
-            scope.startingIdx = (scope.startingIdx - 1) / 2;
-            scope.lastIdx = (scope.lastIdx - 1) / 2;
+            scope.startingIdx = ShowFactory.convertToIdx(scope.startTime, true);
+            scope.lastIdx = ShowFactory.convertToIdx(scope.endTime, true);
           }
         }
         else {
           scope.data.notesPerMeasure = 8;
           if (scope.startingIdx) {
-            scope.startingIdx = scope.startingIdx * 2 + 1;
-            scope.lastIdx = scope.lastIdx * 2 + 1;
+            scope.startingIdx = ShowFactory.convertToIdx(scope.startTime, false);
+            scope.lastIdx = ShowFactory.convertToIdx(scope.endTime, false);
           }
         }
         console.log(scope.startingIdx, scope.lastIdx);
@@ -201,11 +255,11 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         else {
           scope.width = quarterWidth + 1;
 
-          if (scope.$index % 4 === 0) {
-            scope.heightKey = lineHeights.bar;
+          if (idx % 4 === 0) {
+            return lineHeights.bar;
           }
           else {
-            scope.heightKey = lineHeights.quarter;
+            return lineHeights.quarter;
           }
         }
       }
