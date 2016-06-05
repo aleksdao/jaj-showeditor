@@ -8,6 +8,7 @@ module.exports = router;
 router.get('/', function (req, res, next) {
   Show.find()
     .then(function (shows) {
+      console.log(shows);
       res.send(shows);
     }, next);
 });
