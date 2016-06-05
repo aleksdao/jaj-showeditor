@@ -105,6 +105,7 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
           checkThisSavedIdx = scope.show.savedTimelines[arrayKey].savedEighthsIdx;
         };
 
+
         if (scope.startingIdx === undefined) {
           if (arrayKey === 'colors') {
             if (checkThisSavedIdx[idx]) return;
@@ -122,9 +123,11 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         }
         else {
           var iterator = scope.startingIdx;
+          var collided = false;
           if (arrayKey === 'colors') {
             while (iterator < idx) {
               if (checkThisSavedIdx[iterator]) {
+                collided = true;
                 break;
               }
               iterator++;
@@ -133,12 +136,15 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
           else {
             while (iterator < idx) {
               if (checkThisSavedIdx.indexOf(iterator) >= 0) {
+                collided = true;
                 break;
               }
               iterator++;
             }
           }
-          scope.lastIdx = iterator;
+
+          if (collided) scope.lastIdx = iterator - 1;
+          else  scope.lastIdx = iterator;
         }
         scope.eventStartTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.isQuarterResolution).eventStartTime;
         scope.eventEndTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.isQuarterResolution).eventEndTime;
