@@ -1,11 +1,11 @@
 <md-content layout="column" layout-align="center center">
   <md-input-container class="md-block">
-    <label>Show Title</label>
-    <input name="title" ng-model="show.title">
+    <label>Show Name</label>
+    <input name="name" ng-model="show.name">
   </md-input-container>
   <md-input-container class="md-block">
     <label>BPM</label>
-    <input name="title" ng-model="show.bpm">
+    <input name="bpm" ng-model="show.bpm">
   </md-input-container>
-  <md-button ui-sref="createShow" class="md-accent">Create</md-button>
+  <md-button ui-sref="createShow({ 'showName' : show.name, 'bpm' : show.bpm })" class="md-accent">Create</md-button>
 </md-content>

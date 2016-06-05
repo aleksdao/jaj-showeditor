@@ -66,6 +66,7 @@ app.factory("ShowFactory", function ($http) {
     var measures;
     var start;
     var end;
+
     for (var key in configObj) {
       var leftoverIdx = configObj[key].idx;
       if (resolution === 'quarter') {
@@ -80,13 +81,16 @@ app.factory("ShowFactory", function ($http) {
         leftoverIdx = leftoverIdx - quarters * 2;
         sixteenths = leftoverIdx * 2;
       }
+
       if (key === 'start')
         toReturn.eventStartTime = measures + ':' + quarters + ':' + sixteenths;
       else {
         toReturn.eventEndTime = measures + ':' + quarters + ':' + sixteenths;
       }
     }
+
     return toReturn;
+
   };
 
   factory.initializeShow = function () {
@@ -101,6 +105,7 @@ app.factory("ShowFactory", function ($http) {
         savedQuartersIdx: []
       }
     })
+    show.settings = {};
     return show;
   }
 
