@@ -1,0 +1,13 @@
+issues with using layout="row"
+
+<div id="home" layout="column" layout-align="center center">
+  <!-- <div><h1>Sequence Editor</h1></div> -->
+  <div><h1>Sequence Editor</h1></div>
+  <div>
+    <md-button ng-click="makeActive($index)" ng-repeat="option in options" ng-class="{ 'active' : active === $index }">{{ option }}</md-button>
+  </div>
+  <hr />
+  <!-- <ui-view></ui-view> -->
+  <home-create ng-show="activeIdx === 0"></home-create>
+  <div ng-show="activeIdx === 1"><home-open shows="shows"></home-open></div>
+</div>

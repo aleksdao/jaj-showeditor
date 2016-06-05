@@ -25,6 +25,7 @@ app.factory("ShowFactory", function ($http) {
     return $http.get('/api/shows')
       .then(function (response) {
         var shows = response.data;
+        console.log(shows);
         return shows;
       })
   }

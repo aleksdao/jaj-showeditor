@@ -1,9 +1,21 @@
 app.config(function ($stateProvider) {
   $stateProvider
-    .state('shows', {
-      url:'/shows',
-      templateUrl: '/shows.html',
-      controller: ''
+    .state('home', {
+      url:'/',
+      templateUrl: '/home.html',
+      resolve: {
+        shows: function (ShowFactory) {
+          return ShowFactory.getShows();
+        }
+      },
+      controller: function ($scope, shows, ShowFactory) {
+        console.log('yo');
+        $scope.options = ['Create New', 'Open'];
+        $scope.shows = shows;
+        $scope.makeActive = function (idx) {
+          $scope.activeIdx = idx;
+        }
+      }
     })
     .state('createShow', {
       url: '/shows/create',
@@ -18,9 +30,6 @@ app.config(function ($stateProvider) {
         if (!$scope.show) {
           $scope.show = ShowFactory.initializeShow();
         }
-
-
-
         $scope.tabs = [
           { title: 'Edit' },
           { title: 'Preview'}
