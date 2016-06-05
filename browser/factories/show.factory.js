@@ -49,7 +49,7 @@ app.factory("ShowFactory", function ($http) {
 
   }
 
-  factory.convertToMusicalTime = function (startIdx, endIdx, resolution) {
+  factory.convertToMusicalTime = function (startIdx, endIdx, isQuarterResolution) {
     var configObj = {
       start: {
         idx: startIdx,
@@ -69,7 +69,7 @@ app.factory("ShowFactory", function ($http) {
 
     for (var key in configObj) {
       var leftoverIdx = configObj[key].idx;
-      if (resolution === 'quarter') {
+      if (isQuarterResolution) {
         measures = Math.floor((configObj[key].idx) / 4);
         quarters = (configObj[key].idx) - (measures * 4);
         sixteenths = 0;

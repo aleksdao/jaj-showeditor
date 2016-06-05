@@ -5,6 +5,8 @@ app.directive('timelineDirective', function () {
       heightKey: "@",
       widthKey: "@",
       index: "@",
+      startingIdx: "@",
+      lastIdx: "@",
       eventGrouping: "@",
       data: "=",
       getDivHeight: "&"

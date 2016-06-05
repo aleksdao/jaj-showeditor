@@ -23,11 +23,11 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
       scope.actionsObj = {
         changeColorTo: {
           label: 'Change Color',
-          params: ['color', 'backgroundColor']
+          params: ['color']
         },
         fadeColorTo: {
           label: 'Fade Color To',
-          params: ['color', 'backgroundColor', 'transitionTime', 'preload']
+          params: ['color', 'transitionTime', 'preload']
         },
         changeTextTo: {
           label: 'Change Text',
@@ -44,9 +44,6 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
           label: 'Vibrate'
         }
       };
-
-      // if (!scope.show.events)
-      //   scope.show.events = [];
 
       var self = this;
       var data = scope.show.events;
@@ -66,6 +63,9 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         scope.newEvent.activeArrayKey = scope.activeArrayKey;
         scope.newEvent.eventGrouping = scope.activeArrayKey;
         scope.newEvent.actionLabel = scope.actionsObj[scope.newEvent.action].label;
+        if (scope.newEvent.action === 'fadeColorTo') {
+          scope.newEvent.preload = true;
+        }
         console.log(scope.newEvent);
         scope.show.events.push(scope.newEvent);
         scope.highlightSaved(scope.newEvent);
@@ -76,6 +76,7 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         scope.eventStartTime = undefined;
         scope.eventEndTime = undefined;
         scope.newEvent = undefined;
+        scope.activeArrayKey = undefined;
 
         //better to reset startingIdx, lastIdx to undefined rather
         //than null because null seems to get treated like 0 when used
@@ -86,14 +87,31 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
       }
 
       scope.selectIdx = function (idx, arrayKey) {
+        console.log(scope.show);
         if (scope.activeArrayKey !== arrayKey) {
           scope.startingIdx = undefined;
           scope.lastIdx = undefined;
         }
         scope.activeArrayKey = arrayKey;
 
-        if (scope.startingIdx === undefined) {
 
+        //if idx inside of savedQuarters, ignore completely. startingIdx = undefined
+        // if (scope.show.savedTimelines.savedQuartersIdx)
+        var checkThisSavedIdx;
+        if (scope.isQuarterResolution) {
+          checkThisSavedIdx = scope.show.savedTimelines[arrayKey].savedQuartersIdx;
+        }
+        else {
+          checkThisSavedIdx = scope.show.savedTimelines[arrayKey].savedEighthsIdx;
+        };
+
+        if (scope.startingIdx === undefined) {
+          if (arrayKey === 'colors') {
+            if (checkThisSavedIdx[idx]) return;
+          }
+          else {
+            if (checkThisSavedIdx.indexOf(idx) >= 0) return;
+          }
           scope.startingIdx = idx;
           scope.lastIdx = idx;
 
@@ -103,67 +121,70 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
           scope.lastIdx = undefined;
         }
         else {
-          scope.lastIdx = idx;
+          var iterator = scope.startingIdx;
+          if (arrayKey === 'colors') {
+            while (iterator < idx) {
+              if (checkThisSavedIdx[iterator]) {
+                break;
+              }
+              iterator++;
+            }
+          }
+          else {
+            while (iterator < idx) {
+              if (checkThisSavedIdx.indexOf(iterator) >= 0) {
+                break;
+              }
+              iterator++;
+            }
+          }
+          scope.lastIdx = iterator;
         }
-        scope.eventStartTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.qtrResolution).eventStartTime;
-        scope.eventEndTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.qtrResolution).eventEndTime;
+        scope.eventStartTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.isQuarterResolution).eventStartTime;
+        scope.eventEndTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.isQuarterResolution).eventEndTime;
 
         console.log(scope.startingIdx, scope.lastIdx, arrayKey);
 
-
       }
-
-
-
-      scope.convertToQuarters = function (idx, isQuarterResolution) {
-        if (isQuarterResolution) {
-          return idx * 2 + 1;
-        }
-        else {
-          return (idx - 1) / 2;
-        }
-      }
-
 
       scope.highlightSaved = function (newEvent) {
 
         scope.show.savedTimelines[newEvent.activeArrayKey].savedEvents.push(newEvent);
+        var startingQuarterIdx;
+        var lastQuarterIdx;
+        var startingEighthIdx;
+        var lastEighthIdx;
 
-        for (var i = newEvent.startIdx; i <= newEvent.endIdx; i++) {
+        if (scope.isQuarterResolution) {
+          startingQuarterIdx = newEvent.startIdx;
+          lastQuarterIdx = newEvent.endIdx;
+          startingEighthIdx = ShowFactory.convertToIdx(scope.eventStartTime, false);
+          lastEighthIdx = ShowFactory.convertToIdx(scope.eventEndTime, false);
+        }
+        else {
+          startingQuarterIdx = ShowFactory.convertToIdx(scope.eventStartTime, true)
+          lastQuarterIdx = ShowFactory.convertToIdx(scope.eventEndTime, true)
+          startingEighthIdx = newEvent.startIdx;
+          lastEighthIdx = newEvent.endIdx;
+        }
 
-          if (newEvent.activeArrayKey === 'colors') {
-            if (scope.isQuarterResolution) {
-
-              var eighthIdx = scope.convertToQuarters(i, true)
-              scope.show.savedTimelines.colors.savedQuartersIdx[i] = newEvent.params.color;
-              scope.show.savedTimelines.colors.savedEighthsIdx[eighthIdx] = newEvent.params.color;
-
-            }
-            else {
-
-              var quarterIdx = scope.convertToQuarters(i, false)
-              scope.show.savedTimelines.colors.savedEighthsIdx[i] = newEvent.params.color;
-              scope.show.savedTimelines.colors.savedQuartersIdx[quarterIdx] = newEvent.params.color;
-
-            }
+        if (newEvent.activeArrayKey === 'colors') {
+          for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
+            scope.show.savedTimelines.colors.savedQuartersIdx[i] = newEvent.params.color;
           }
-          else {
-            if (scope.isQuarterResolution) {
-
-              var eighthIdx = scope.convertToQuarters(i, true)
-              scope.show.savedTimelines[newEvent.activeArrayKey].savedQuartersIdx.push(i);
-              scope.show.savedTimelines[newEvent.activeArrayKey].savedEighthsIdx.push(eighthIdx);
-
-            }
-            else {
-
-              var quarterIdx = scope.convertToQuarters(i, false)
-              scope.show.savedTimelines[newEvent.activeArrayKey].savedEighthsIdx.push(i);
-              scope.show.savedTimelines[newEvent.activeArrayKey].savedQuartersIdx.push(quarterIdx);
-
-            }
+          for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
+            scope.show.savedTimelines.colors.savedEighthsIdx[j] = newEvent.params.color;
           }
         }
+        else {
+          for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
+            scope.show.savedTimelines[newEvent.activeArrayKey].savedQuartersIdx.push(i);
+          }
+          for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
+            scope.show.savedTimelines[newEvent.activeArrayKey].savedEighthsIdx.push(j);
+          }
+        }
+
         console.log(scope.show.savedTimelines);
       }
 

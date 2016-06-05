@@ -13,18 +13,19 @@
         <md-option ng-value="action" ng-repeat="action in eventGroupings[activeArrayKey].actions">{{ actionsObj[action].label }}</md-option>
       </md-select>
     </md-input-container>
-    <div  md-color-picker
-          ng-show="activeArrayKey === 'colors'"
-          ng-repeat="param in [actionsObj[newEvent.action].params]"
-          ng-model="newEvent.params[param]"
-          label="Choose a {{param}}"
-          icon="brush"
-          default="f00"
-          md-color-generic-palette="false"
-          md-color-history="false">
+    <div ng-show="activeArrayKey === 'colors'">
+      <div  md-color-picker
+            ng-model="newEvent.params.color"
+            label="Choose a Color"
+            icon="brush"
+            default="f00"
+            md-color-generic-palette="false"
+            md-color-history="false">
+      </div>
     </div>
-    <md-input-container ng-show="activeArrayKey !== 'colors'"
-    ng-repeat="param in actionsObj[newEvent.action].params">
+    <md-input-container
+      ng-show="activeArrayKey !== 'colors'"
+      ng-repeat="param in actionsObj[newEvent.action].params">
       <label>{{ param }}</label>
       <input ng-model="newEvent.params[param]">
     </md-input-container>
