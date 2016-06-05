@@ -2,15 +2,6 @@ app.directive('showTemplate', function () {
   return {
     templateUrl: '/show.template.directive.html',
     controller: function ($scope) {
-      // if (!show) {
-      //   console.log($stateParams.showName);
-      //   $scope.show = ShowFactory.initializeShow();
-      //   $scope.show.name = $stateParams.showName;
-      //   $scope.show.settings.bpm = $stateParams.bpm;
-      // }
-      // else {
-      //   $scope.show = show;
-      // }
 
       $scope.tabs = [
         { title: 'Edit' },

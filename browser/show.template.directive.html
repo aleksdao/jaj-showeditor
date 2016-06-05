@@ -17,8 +17,8 @@
     <div style="height:33px" ng-repeat="line in array track by $index" ng-click="selectIdx($index, eventGrouping)" ng-class="{ 'selected1' : (isCurrentTimeline($index, startingIdx, lastIdx, eventGrouping) || isAddedToShow($index, eventGrouping)) && eventGrouping === 'colors',
       'selected2' : (isCurrentTimeline($index, startingIdx, lastIdx, eventGrouping) || isAddedToShow($index, eventGrouping)) && eventGrouping === 'text',
       'selected3' : (isCurrentTimeline($index, startingIdx, lastIdx, eventGrouping) || isAddedToShow($index, eventGrouping)) && eventGrouping === 'phone' }"
-      ng-style="((isCurrentTimeline($index, startingIdx, lastIdx, eventGrouping) && eventGrouping === 'colors') && { 'backgroundColor': newEvent.params.color }) || (isAddedToShow($index, eventGrouping) && { 'backgroundColor' : isQuarterResolution ? show.savedTimelines.colors.savedQuartersIdx[$index] : show.savedTimelines.colors.savedEighthsIdx[$index]})">
-      <timeline-directive index="{{$index}}" event-grouping="{{eventGrouping}}" data="data" notes-per-measure="{{notesPerMeasure}}" height-key="{{getDivHeight($index)}}" width-key="16"></timeline-directive>
+      ng-style="((isCurrentTimeline($index, startingIdx, lastIdx, eventGrouping) && eventGrouping === 'colors') && { 'backgroundColor': newEvent.params.color }) || ((isAddedToShow($index, eventGrouping) && eventGrouping === 'colors') && { 'backgroundColor' : isAddedToShow($index, eventGrouping)})">
+      <timeline-directive index="{{$index}}" starting-idx="{{startingIdx}}" last-idx="{{lastIdx}}" event-grouping="{{eventGrouping}}" data="data" notes-per-measure="{{notesPerMeasure}}" height-key="{{getDivHeight($index)}}" width-key="16"></timeline-directive>
     </div>
   </div>
 </md-content>

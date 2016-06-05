@@ -20,7 +20,7 @@ app.config(function ($stateProvider) {
     })
     .state('createShow', {
       url: '/shows/create',
-      templateUrl: '/show.new.html',
+      templateUrl: '/show.new.state.html',
       params: {
         showName: {},
         bpm: {}
@@ -35,7 +35,7 @@ app.config(function ($stateProvider) {
     })
     .state('editShow', {
       url: '/shows/:id',
-      templateUrl: '/show.edit.html',
+      templateUrl: '/show.edit.state.html',
       resolve: {
         show: function ($stateParams, ShowFactory) {
             return ShowFactory.getShow($stateParams.id);
@@ -44,7 +44,7 @@ app.config(function ($stateProvider) {
       controller: function ($scope, show) {
 
           $scope.show = show;
-  
+
       }
     })
 })

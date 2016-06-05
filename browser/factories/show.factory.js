@@ -39,17 +39,17 @@ app.factory("ShowFactory", function ($http) {
       sixteenths: Number(nums[2]),
     }
     if (isQuarterResolution) {
-      idx += measures * 4 + quarters; // not accounting for sixteenths yet
+      idx += musicalTime.measures * 4 + musicalTime.quarters; // not accounting for sixteenths yet
     }
     else {
-      idx += measures * 8 + quarters * 2 + sixteenths / 2;
+      idx += musicalTime.measures * 8 + musicalTime.quarters * 2 + musicalTime.sixteenths / 2;
     }
 
     return idx;
 
   }
 
-  factory.convertToMusicalTime = function (startIdx, endIdx, resolution) {
+  factory.convertToMusicalTime = function (startIdx, endIdx, isQuarterResolution) {
     var configObj = {
       start: {
         idx: startIdx,
@@ -69,7 +69,7 @@ app.factory("ShowFactory", function ($http) {
 
     for (var key in configObj) {
       var leftoverIdx = configObj[key].idx;
-      if (resolution === 'quarter') {
+      if (isQuarterResolution) {
         measures = Math.floor((configObj[key].idx) / 4);
         quarters = (configObj[key].idx) - (measures * 4);
         sixteenths = 0;
@@ -105,6 +105,7 @@ app.factory("ShowFactory", function ($http) {
         savedQuartersIdx: []
       }
     })
+    show.events = [];
     show.settings = {};
     return show;
   }
