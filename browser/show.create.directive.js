@@ -10,10 +10,6 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
       // scope.actionsObj = {};
       // if (!scope.show) scope.show = {};
       scope.data.notesPerMeasure = 8;
-      scope.tabs = [
-        { title: 'Edit' },
-        { title: 'Preview'}
-      ];
 
       scope.eventGroupings = {
         colors: {
@@ -252,15 +248,12 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
           scope.width = quarterWidth / 2;
 
           if (idx % 8 === 0) {
-            // scope.heightKey = lineHeights.bar;
             return lineHeights.bar;
           }
           else if (idx % 2 === 0) {
-            // scope.heightKey = lineHeights.quarter;
             return lineHeights.quarter;
           }
           else {
-            // scope.heightKey = lineHeights.eighths;
             return lineHeights.eighths;
           }
         }
@@ -275,16 +268,6 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
           }
         }
       }
-
-
-// if eventGrouping === 'colors'
-// show.event
-
-
-      // var borderThickness = 2;
-
-
-
     }
   }
 })

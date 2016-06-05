@@ -1,6 +1,6 @@
 app.controller('AppCtrl', function ($scope, ShowFactory) {
 
-  $scope.myTitle = 'Awesome Sequence';
+  // $scope.myTitle = 'Awesome Sequence';
   $scope.data = {
     qtrResolution: false,
     notesPerMeasure: 8
