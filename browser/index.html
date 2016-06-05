@@ -2,6 +2,7 @@
   <head>
     <base href="/">
     <link rel="stylesheet" href="main.css">
+    <!-- <link rel="stylesheet" href="../public/style.css"> -->
     <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css">
     <link rel="stylesheet" href="../bower_components/ng-table/dist/ng-table.css">
     <link rel="stylesheet" href="../bower_components/angular-material-datetimepicker/css/material-datetimepicker.css">
@@ -12,7 +13,6 @@
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="../bower_components/momentjs/moment.js"></script>
-    <!-- <script src="../node_modules/angular/angular.js"></script> -->
     <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="../node_modules/angular-material/angular-material.js"></script>
     <script src="../node_modules/angular-aria/angular-aria.js"></script>
@@ -23,21 +23,19 @@
     <script src="../bower_components/tinycolor/dist/tinycolor-min.js"></script>
     <script src="../bower_components/md-color-picker/dist/mdColorPicker.min.js"></script>
 
-
     <script src="main.js"></script>
     <script src="app.controller.js"></script>
     <script src="show.states.js"></script>
     <script src="show.create.directive.js"></script>
-    <script src="show.factory.js"></script>
-    <script src="home.create.directive.js"></script>
-    <script src="home.open.directive.js"></script>
-    <!-- <script src="edit.show.controller.js"></script> -->
-    <script src="timeline.directive.js"></script>
+    <script src="factories/show.factory.js"></script>
+    <script src="homepage/home.create.directive.js"></script>
+    <script src="homepage/home.open.directive.js"></script>
+    <script src="timeline/timeline.interval.directive.js"></script>
     <script src="show.template.directive.js"></script>
 
   </head>
 <body ng-app="showEditor" ng-controller="AppCtrl">
-  <!-- <span class="ruler"></span> -->
+
   <div>
     <h3>Create Show</h3>
     <md-button class="md-raised" ui-sref="createShow">Create Show</md-button>
@@ -49,7 +47,6 @@
   <md-divider></md-divider>
 
   <ui-view></ui-view>
-  <!-- <hr> -->
 
 </body>
 

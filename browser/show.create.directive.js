@@ -1,14 +1,8 @@
 app.directive('addEvent', function (NgTableParams, ShowFactory) {
   return {
-    // templateUrl: currentScriptPath.replace('directive.js', 'directive.html'),
     templateUrl: '/show.create.directive.html',
-    // scope: {
-    //   actionTime: "=",
-    //   actionTimes: "="
-    // },
     link: function (scope, elem, attrs) {
-      // scope.actionsObj = {};
-      // if (!scope.show) scope.show = {};
+
       scope.data.notesPerMeasure = 8;
 
       scope.eventGroupings = {
@@ -33,7 +27,7 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         },
         fadeColorTo: {
           label: 'Fade Color To',
-          params: ['color', 'backgroundColor', 'transitionTime']
+          params: ['color', 'backgroundColor', 'transitionTime', 'preload']
         },
         changeTextTo: {
           label: 'Change Text',
@@ -51,16 +45,8 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         }
       };
 
-      var actionParams = {
-        changeColorTo: ['color', 'backgroundColor'],
-        fadeColorTo: ['color', 'backgroundColor', 'transitionTime'],
-        changeText: ['text', 'color', 'target'],
-        resetScreen: ['text', 'color', 'backgroundColor']
-      };
-
-
-      if (!scope.show.events)
-        scope.show.events = [];
+      // if (!scope.show.events)
+      //   scope.show.events = [];
 
       var self = this;
       var data = scope.show.events;
@@ -140,52 +126,41 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
 
 
       scope.highlightSaved = function (newEvent) {
-        // console.log(newEvent);
-        if (!scope.show.savedTimelines)
-          scope.show.savedTimelines = {};
 
-
-        if (!scope.show.savedTimelines[newEvent.activeArrayKey]) {
-          // if (newEvent.activeArrayKey === 'colors') {
-          //   scope.show.savedTimelines[newEvent.activeArrayKey] = {
-          //     savedEvents: [],
-          //     savedIdx: {}
-          //   }
-          // }
-          // else {
-          scope.show.savedTimelines[newEvent.activeArrayKey] = {
-            savedEvents: [],
-            savedEighthsIdx: [],
-            savedQuartersIdx: []
-          }
-          // }
-        }
         scope.show.savedTimelines[newEvent.activeArrayKey].savedEvents.push(newEvent);
+
         for (var i = newEvent.startIdx; i <= newEvent.endIdx; i++) {
-          console.log(i);
+
           if (newEvent.activeArrayKey === 'colors') {
             if (scope.isQuarterResolution) {
+
               var eighthIdx = scope.convertToQuarters(i, true)
               scope.show.savedTimelines.colors.savedQuartersIdx[i] = newEvent.params.color;
               scope.show.savedTimelines.colors.savedEighthsIdx[eighthIdx] = newEvent.params.color;
+
             }
             else {
+
               var quarterIdx = scope.convertToQuarters(i, false)
               scope.show.savedTimelines.colors.savedEighthsIdx[i] = newEvent.params.color;
               scope.show.savedTimelines.colors.savedQuartersIdx[quarterIdx] = newEvent.params.color;
+
             }
           }
           else {
             if (scope.isQuarterResolution) {
+
               var eighthIdx = scope.convertToQuarters(i, true)
               scope.show.savedTimelines[newEvent.activeArrayKey].savedQuartersIdx.push(i);
               scope.show.savedTimelines[newEvent.activeArrayKey].savedEighthsIdx.push(eighthIdx);
 
             }
             else {
+
               var quarterIdx = scope.convertToQuarters(i, false)
               scope.show.savedTimelines[newEvent.activeArrayKey].savedEighthsIdx.push(i);
               scope.show.savedTimelines[newEvent.activeArrayKey].savedQuartersIdx.push(quarterIdx);
+
             }
           }
         }
@@ -193,7 +168,9 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
       }
 
       scope.createShow = function () {
+
         console.log(scope.show);
+
         ShowFactory.createShow(scope.show)
           .then(function (show) {
 
@@ -203,39 +180,28 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
             // scope.show = undefined;
             // scope.activeArrayKey = undefined;
 
-
             console.log('created show', show);
+            return show;
           })
-      }
-
-
-      scope.eventAddedToShow = function () {
-
       }
 
       // NEED TO REVISIT. ACCOUNT FOR EIGHTHTS SWITCHING TO QTR NOTES
       // NOT BEING ACCURATELY MEASURED
 
       scope.changeToResolution = function (isQuarterResolution) {
-        // console.log(resolution);
-        if (isQuarterResolution) {
-          scope.data.notesPerMeasure = 4
-          if (scope.startingIdx) {
-            scope.startingIdx = ShowFactory.convertToIdx(scope.startTime, true);
-            scope.lastIdx = ShowFactory.convertToIdx(scope.endTime, true);
-          }
+
+        isQuarterResolution ? scope.data.notesPerMeasure = 4 : scope.data.notesPerMeasure = 8;
+
+        if (scope.startingIdx) {
+          scope.startingIdx = ShowFactory.convertToIdx(scope.eventStartTime, isQuarterResolution);
+          scope.lastIdx = ShowFactory.convertToIdx(scope.eventEndTime, isQuarterResolution);
         }
-        else {
-          scope.data.notesPerMeasure = 8;
-          if (scope.startingIdx) {
-            scope.startingIdx = ShowFactory.convertToIdx(scope.startTime, false);
-            scope.lastIdx = ShowFactory.convertToIdx(scope.endTime, false);
-          }
-        }
+
         console.log(scope.startingIdx, scope.lastIdx);
       }
 
       scope.getDivHeight = function (idx) {
+
         var lineHeights = {
           bar: 32,
           quarter: 8,
