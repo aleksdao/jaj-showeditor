@@ -4,6 +4,11 @@ app.factory("ShowFactory", function ($http) {
   //
   // }
 
+  var startingIdx;
+  var lastIdx;
+  var activeArrayKey;
+
+
   factory.createShow = function (show) {
 
     return $http.post('/api/shows', { show: show })
@@ -108,6 +113,100 @@ app.factory("ShowFactory", function ($http) {
     show.events = [];
     show.settings = {};
     return show;
+  }
+
+  factory.getActiveArrayKey = function () {
+    return activeArrayKey;
+  }
+
+  factory.getStartingIdx = function () {
+    console.log(startingIdx);
+    return startingIdx;
+  }
+
+  factory.getLastIdx = function () {
+    return lastIdx;
+  }
+
+  factory.resetEvent = function () {
+    startingIdx = undefined;
+    lastIdx = undefined;
+    // activeArrayKey = undefined;
+  }
+
+  factory.selectIdx = function (idx, checkArrayKey, isQuarterResolution, show) {
+    // console.log(scope.show);
+    if (activeArrayKey !== checkArrayKey) {
+      startingIdx = undefined;
+      lastIdx = undefined;
+    }
+
+    activeArrayKey = checkArrayKey;
+
+
+    //if idx inside of savedQuarters, ignore completely. startingIdx = undefined
+    // if (scope.show.savedTimelines.savedQuartersIdx)
+    var checkThisSavedIdx;
+    if (isQuarterResolution) {
+      checkThisSavedIdx = show.savedTimelines[activeArrayKey].savedQuartersIdx;
+    }
+    else {
+      checkThisSavedIdx = show.savedTimelines[activeArrayKey].savedEighthsIdx;
+    };
+
+
+    if (startingIdx === undefined) {
+      if (activeArrayKey === 'colors') {
+        if (checkThisSavedIdx[idx]) return;
+      }
+      else {
+        if (checkThisSavedIdx.indexOf(idx) >= 0) return;
+      }
+      startingIdx = idx;
+      lastIdx = idx;
+
+    }
+    else if (startingIdx >= idx) {
+      startingIdx = undefined;
+      lastIdx = undefined;
+    }
+    else {
+      var iterator = startingIdx;
+
+      //collided tracks whether or not the user's click for lastIdx conflicts with an already
+      //existing event. if it detects a collision, we set collide to true. if there is no conflict,
+      //collide remains false. we'll use the collided boolean to calculate lastIdx
+
+
+      var collided = false;
+      if (activeArrayKey === 'colors') {
+        while (iterator < idx) {
+          if (checkThisSavedIdx[iterator]) {
+            collided = true;
+            break;
+          }
+          iterator++;
+        }
+      }
+      else {
+        while (iterator < idx) {
+          if (checkThisSavedIdx.indexOf(iterator) >= 0) {
+            collided = true;
+            break;
+          }
+          iterator++;
+        }
+      }
+
+      //if there was a collision, we set the lastIdx to one index before the collision occurred
+      //if no collision, we set lastIdx to where user clicked
+
+      if (collided) lastIdx = iterator - 1;
+      else lastIdx = iterator;
+    }
+
+
+    // console.log(scope.startingIdx, scope.lastIdx, arrayKey);
   }
 
 

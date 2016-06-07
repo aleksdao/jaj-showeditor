@@ -82,76 +82,95 @@ app.directive('addEvent', function (NgTableParams, ShowFactory) {
         //than null because null seems to get treated like 0 when used
         //in >= and <=
 
-        scope.startingIdx = undefined;
-        scope.lastIdx = undefined;
+        ShowFactory.resetEvent();
+        scope.startingIdx = ShowFactory.getStartingIdx();
+        scope.lastIdx = ShowFactory.getLastIdx();
       }
 
-      scope.selectIdx = function (idx, arrayKey) {
-        console.log(scope.show);
-        if (scope.activeArrayKey !== arrayKey) {
-          scope.startingIdx = undefined;
-          scope.lastIdx = undefined;
-        }
-        scope.activeArrayKey = arrayKey;
+      // scope.selectIdx = function (idx, arrayKey, activeArrayKey, isQuarterResolution, show) {
+      //   console.log(scope.show);
+      //   if (scope.activeArrayKey !== arrayKey) {
+      //     scope.startingIdx = undefined;
+      //     scope.lastIdx = undefined;
+      //   }
+      //   scope.activeArrayKey = arrayKey;
+      //
+      //
+      //   //if idx inside of savedQuarters, ignore completely. startingIdx = undefined
+      //   // if (scope.show.savedTimelines.savedQuartersIdx)
+      //   var checkThisSavedIdx;
+      //   if (scope.isQuarterResolution) {
+      //     checkThisSavedIdx = scope.show.savedTimelines[arrayKey].savedQuartersIdx;
+      //   }
+      //   else {
+      //     checkThisSavedIdx = scope.show.savedTimelines[arrayKey].savedEighthsIdx;
+      //   };
+      //
+      //
+      //   if (scope.startingIdx === undefined) {
+      //     if (arrayKey === 'colors') {
+      //       if (checkThisSavedIdx[idx]) return;
+      //     }
+      //     else {
+      //       if (checkThisSavedIdx.indexOf(idx) >= 0) return;
+      //     }
+      //     scope.startingIdx = idx;
+      //     scope.lastIdx = idx;
+      //
+      //   }
+      //   else if (scope.startingIdx >= idx) {
+      //     scope.startingIdx = undefined;
+      //     scope.lastIdx = undefined;
+      //   }
+      //   else {
+      //     var iterator = scope.startingIdx;
+      //
+      //     //collided tracks whether or not the user's click for lastIdx conflicts with an already
+      //     //existing event. if it detects a collision, we set collide to true. if there is no conflict,
+      //     //collide remains false. we'll use the collided boolean to calculate lastIdx
+      //
+      //
+      //     var collided = false;
+      //     if (arrayKey === 'colors') {
+      //       while (iterator < idx) {
+      //         if (checkThisSavedIdx[iterator]) {
+      //           collided = true;
+      //           break;
+      //         }
+      //         iterator++;
+      //       }
+      //     }
+      //     else {
+      //       while (iterator < idx) {
+      //         if (checkThisSavedIdx.indexOf(iterator) >= 0) {
+      //           collided = true;
+      //           break;
+      //         }
+      //         iterator++;
+      //       }
+      //     }
+      //
+      //     //if there was a collision, we set the lastIdx to one index before the collision occurred
+      //     //if no collision, we set lastIdx to where user clicked
+      //
+      //     if (collided) scope.lastIdx = iterator - 1;
+      //     else  scope.lastIdx = iterator;
+      //   }
+      //   scope.eventStartTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.isQuarterResolution).eventStartTime;
+      //   scope.eventEndTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.isQuarterResolution).eventEndTime;
+      //
+      //   console.log(scope.startingIdx, scope.lastIdx, arrayKey);
+      //
+      // }
 
-
-        //if idx inside of savedQuarters, ignore completely. startingIdx = undefined
-        // if (scope.show.savedTimelines.savedQuartersIdx)
-        var checkThisSavedIdx;
-        if (scope.isQuarterResolution) {
-          checkThisSavedIdx = scope.show.savedTimelines[arrayKey].savedQuartersIdx;
-        }
-        else {
-          checkThisSavedIdx = scope.show.savedTimelines[arrayKey].savedEighthsIdx;
-        };
-
-
-        if (scope.startingIdx === undefined) {
-          if (arrayKey === 'colors') {
-            if (checkThisSavedIdx[idx]) return;
-          }
-          else {
-            if (checkThisSavedIdx.indexOf(idx) >= 0) return;
-          }
-          scope.startingIdx = idx;
-          scope.lastIdx = idx;
-
-        }
-        else if (scope.startingIdx >= idx) {
-          scope.startingIdx = undefined;
-          scope.lastIdx = undefined;
-        }
-        else {
-          var iterator = scope.startingIdx;
-          var collided = false;
-          if (arrayKey === 'colors') {
-            while (iterator < idx) {
-              if (checkThisSavedIdx[iterator]) {
-                collided = true;
-                break;
-              }
-              iterator++;
-            }
-          }
-          else {
-            while (iterator < idx) {
-              if (checkThisSavedIdx.indexOf(iterator) >= 0) {
-                collided = true;
-                break;
-              }
-              iterator++;
-            }
-          }
-
-          if (collided) scope.lastIdx = iterator - 1;
-          else  scope.lastIdx = iterator;
-        }
-        scope.eventStartTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.isQuarterResolution).eventStartTime;
-        scope.eventEndTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.isQuarterResolution).eventEndTime;
-
-        console.log(scope.startingIdx, scope.lastIdx, arrayKey);
-
-      }
+      // scope.selectIdx = function (idx, checkArrayKey) {
+      //   ShowFactory.selectIdx(idx, checkArrayKey, scope.isQuarterResolution, scope.show);
+      //   scope.activeArrayKey = ShowFactory.getActiveArrayKey();
+      //   scope.startingIdx = ShowFactory.getStartingIdx();
+      //   scope.lastIdx = ShowFactory.getLastIdx();
+      //   scope.eventStartTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.isQuarterResolution).eventStartTime;
+      //   scope.eventEndTime = ShowFactory.convertToMusicalTime(scope.startingIdx, scope.lastIdx, scope.isQuarterResolution).eventEndTime;
+      // }
 
       scope.highlightSaved = function (newEvent) {
 
