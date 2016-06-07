@@ -7,7 +7,63 @@ app.factory("ShowFactory", function ($http) {
   var startingIdx;
   var lastIdx;
   var activeArrayKey;
+  // var newEvent = {};
+  var _newEvent = {};
+  var eventStartTime;
+  var eventEndTime;
+  var show;
+  var isQuarterResolution = false;
 
+  var eventGroupings = {
+    colors: {
+      actions: ['changeColorTo', 'fadeColorTo'],
+      label: 'Colors'
+    },
+    text: {
+      actions: ['changeTextTo', 'resetScreen'],
+      label: 'Text'
+    },
+    phone: {
+      actions: ['flash', 'vibrate'],
+      label: 'Phone'
+    }
+  }
+
+  var actionsObj = {
+    changeColorTo: {
+      label: 'Change Color',
+      params: ['color']
+    },
+    fadeColorTo: {
+      label: 'Fade Color To',
+      params: ['color', 'transitionTime', 'preload']
+    },
+    changeTextTo: {
+      label: 'Change Text',
+      params: ['text', 'color', 'target']
+    },
+    resetScreen: {
+      label: 'Reset Screen',
+      params: ['text', 'color', 'backgroundColor']
+    },
+    flash: {
+      label: 'Flash'
+    },
+    vibrate: {
+      label: 'Vibrate'
+    }
+  };
+
+
+  factory.getActionsObj = function () {
+    return actionsObj;
+  }
+
+  factory.getEventGroupings = function () {
+    return eventGroupings;
+  }
+
+// Factory API FUNCTIONS to Grab Data from Backend
 
   factory.createShow = function (show) {
 
@@ -35,6 +91,9 @@ app.factory("ShowFactory", function ($http) {
       })
   }
 
+//Frontend factory functions used to manage
+//the timelines
+
   factory.convertToIdx = function (time, isQuarterResolution) {
     var idx = 0;
     var nums = time.split(':');
@@ -54,14 +113,14 @@ app.factory("ShowFactory", function ($http) {
 
   }
 
-  factory.convertToMusicalTime = function (startIdx, endIdx, isQuarterResolution) {
+  factory.convertToMusicalTime = function (startingIdx, lastIdx, isQuarterResolution) {
     var configObj = {
       start: {
-        idx: startIdx,
+        idx: startingIdx,
         scopeVar: 'actionTime'
       },
       end: {
-        idx: endIdx,
+        idx: lastIdx,
         scopeVar: 'actionEndTime'
       }
     }
@@ -87,9 +146,12 @@ app.factory("ShowFactory", function ($http) {
         sixteenths = leftoverIdx * 2;
       }
 
-      if (key === 'start')
+      if (key === 'start') {
+        eventStartTime = measures + ':' + quarters + ':' + sixteenths;
         toReturn.eventStartTime = measures + ':' + quarters + ':' + sixteenths;
+      }
       else {
+        eventEndTime = measures + ':' + quarters + ':' + sixteenths;
         toReturn.eventEndTime = measures + ':' + quarters + ':' + sixteenths;
       }
     }
@@ -98,8 +160,10 @@ app.factory("ShowFactory", function ($http) {
 
   };
 
+  //seeds a show with empty objects and arrays
+
   factory.initializeShow = function () {
-    var show = {};
+    show = {};
     var eventGroupings = ['colors', 'text', 'phone'];
     show.events = [];
     show.savedTimelines = {};
@@ -128,11 +192,29 @@ app.factory("ShowFactory", function ($http) {
     return lastIdx;
   }
 
+  factory.getNewEvent = function () {
+    return _newEvent;
+  }
+
   factory.resetEvent = function () {
+
+    //better to reset startingIdx, lastIdx to undefined rather
+    //than null because null seems to get treated like 0 when used
+    //in >= and <=
+
     startingIdx = undefined;
     lastIdx = undefined;
-    // activeArrayKey = undefined;
+    activeArrayKey = undefined;
+    eventStartTime = undefined;
+    eventEndTime = undefined;
+    _newEvent = {};
   }
+
+  //one of the core factory functions, selectIdx
+  //sets the startingIdx & lastIdx values so as to
+  //determine which cells get highlighted based on
+  //user selection. it also has to detect if there are
+  //existing events on timeilne and not to overwrite those
 
   factory.selectIdx = function (idx, checkArrayKey, isQuarterResolution, show) {
     // console.log(scope.show);
@@ -207,6 +289,69 @@ app.factory("ShowFactory", function ($http) {
 
 
     // console.log(scope.startingIdx, scope.lastIdx, arrayKey);
+  }
+
+  factory.addAction = function (newEvent) {
+    _newEvent = newEvent;
+    if (!show.events)
+      show.events = [];
+
+    console.log(startingIdx, lastIdx);
+
+    // newEvent.time = eventStartTime;
+    // newEvent.endTime = eventEndTime;
+    _newEvent.startingIdx = startingIdx;
+    _newEvent.lastIdx = lastIdx;
+    _newEvent.activeArrayKey = activeArrayKey;
+    _newEvent.eventGrouping = activeArrayKey;
+    _newEvent.actionLabel = actionsObj[_newEvent.action].label;
+    if (_newEvent.action === 'fadeColorTo') {
+      _newEvent.preload = true;
+    }
+    console.log(_newEvent);
+    show.events.push(_newEvent);
+    factory.highlightSavedEvent(_newEvent);
+    factory.resetEvent();
+  }
+
+  factory.highlightSavedEvent = function (newEvent) {
+    show.savedTimelines[newEvent.activeArrayKey].savedEvents.push(newEvent);
+    var startingQuarterIdx;
+    var lastQuarterIdx;
+    var startingEighthIdx;
+    var lastEighthIdx;
+
+    if (isQuarterResolution) {
+      startingQuarterIdx = newEvent.startingIdx;
+      lastQuarterIdx = newEvent.lastIdx;
+      startingEighthIdx = factory.convertToIdx(eventStartTime, false);
+      lastEighthIdx = factory.convertToIdx(eventEndTime, false);
+    }
+    else {
+      startingQuarterIdx = factory.convertToIdx(eventStartTime, true)
+      lastQuarterIdx = factory.convertToIdx(eventEndTime, true)
+      startingEighthIdx = newEvent.startingIdx;
+      lastEighthIdx = newEvent.lastIdx;
+    }
+
+    if (newEvent.activeArrayKey === 'colors') {
+      for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
+        show.savedTimelines.colors.savedQuartersIdx[i] = newEvent.params.color;
+      }
+      for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
+        show.savedTimelines.colors.savedEighthsIdx[j] = newEvent.params.color;
+      }
+    }
+    else {
+      for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
+        show.savedTimelines[newEvent.activeArrayKey].savedQuartersIdx.push(i);
+      }
+      for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
+        show.savedTimelines[newEvent.activeArrayKey].savedEighthsIdx.push(j);
+      }
+    }
+
+    console.log(show.savedTimelines);
   }
 
 

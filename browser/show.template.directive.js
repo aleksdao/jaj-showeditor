@@ -3,6 +3,7 @@ app.directive('showTemplate', function () {
     templateUrl: '/show.template.directive.html',
     controller: function ($scope, ShowFactory) {
 
+
       $scope.tabs = [
         { title: 'Edit' },
         { title: 'Preview'}
@@ -10,11 +11,12 @@ app.directive('showTemplate', function () {
 
       $scope.selectIdx = function (idx, checkArrayKey) {
         ShowFactory.selectIdx(idx, checkArrayKey, $scope.isQuarterResolution, $scope.show);
+        $scope.newEvent = ShowFactory.getNewEvent();
         $scope.activeArrayKey = ShowFactory.getActiveArrayKey();
         $scope.startingIdx = ShowFactory.getStartingIdx();
         $scope.lastIdx = ShowFactory.getLastIdx();
-        $scope.eventStartTime = ShowFactory.convertToMusicalTime($scope.startingIdx, $scope.lastIdx, $scope.isQuarterResolution).eventStartTime;
-        $scope.eventEndTime = ShowFactory.convertToMusicalTime($scope.startingIdx, $scope.lastIdx, $scope.isQuarterResolution).eventEndTime;
+        $scope.newEvent.time = ShowFactory.convertToMusicalTime($scope.startingIdx, $scope.lastIdx, $scope.isQuarterResolution).eventStartTime;
+        $scope.newEvent.endTime = ShowFactory.convertToMusicalTime($scope.startingIdx, $scope.lastIdx, $scope.isQuarterResolution).eventEndTime;
       }
 
       $scope.isCurrentTimeline = function (currentIdx, startingIdx, lastIdx, eventGrouping, matchThis) {
