@@ -4,6 +4,77 @@ app.factory("ShowFactory", function ($http) {
   //
   // }
 
+  var startingIdx;
+  var lastIdx;
+  var activeArrayKey;
+  // var newEvent = {};
+  var _newEvent = {};
+  var eventStartTime;
+  var eventEndTime;
+  var show;
+  // var width;
+  var isQuarterResolution = false;
+
+  var notesPerMeasure = 8;
+
+  var lineHeights = {
+    bar: 32,
+    quarter: 8,
+    eighths: 4
+  }
+
+
+  var eventGroupings = {
+    colors: {
+      actions: ['changeColorTo', 'fadeColorTo'],
+      label: 'Colors'
+    },
+    text: {
+      actions: ['changeTextTo', 'resetScreen'],
+      label: 'Text'
+    },
+    phone: {
+      actions: ['flash', 'vibrate'],
+      label: 'Phone'
+    }
+  }
+
+  var actionsObj = {
+    changeColorTo: {
+      label: 'Change Color',
+      params: ['color']
+    },
+    fadeColorTo: {
+      label: 'Fade Color To',
+      params: ['color', 'transitionTime', 'preload']
+    },
+    changeTextTo: {
+      label: 'Change Text',
+      params: ['text', 'color', 'target']
+    },
+    resetScreen: {
+      label: 'Reset Screen',
+      params: ['text', 'color', 'backgroundColor']
+    },
+    flash: {
+      label: 'Flash'
+    },
+    vibrate: {
+      label: 'Vibrate'
+    }
+  };
+
+
+  factory.getActionsObj = function () {
+    return actionsObj;
+  }
+
+  factory.getEventGroupings = function () {
+    return eventGroupings;
+  }
+
+// Factory API FUNCTIONS to Grab Data from Backend
+
   factory.createShow = function (show) {
 
     return $http.post('/api/shows', { show: show })
@@ -30,6 +101,9 @@ app.factory("ShowFactory", function ($http) {
       })
   }
 
+//Frontend factory functions used to manage
+//the timelines
+
   factory.convertToIdx = function (time, isQuarterResolution) {
     var idx = 0;
     var nums = time.split(':');
@@ -49,14 +123,14 @@ app.factory("ShowFactory", function ($http) {
 
   }
 
-  factory.convertToMusicalTime = function (startIdx, endIdx, isQuarterResolution) {
+  factory.convertToMusicalTime = function (startingIdx, lastIdx, isQuarterResolution) {
     var configObj = {
       start: {
-        idx: startIdx,
+        idx: startingIdx,
         scopeVar: 'actionTime'
       },
       end: {
-        idx: endIdx,
+        idx: lastIdx,
         scopeVar: 'actionEndTime'
       }
     }
@@ -82,9 +156,12 @@ app.factory("ShowFactory", function ($http) {
         sixteenths = leftoverIdx * 2;
       }
 
-      if (key === 'start')
+      if (key === 'start') {
+        eventStartTime = measures + ':' + quarters + ':' + sixteenths;
         toReturn.eventStartTime = measures + ':' + quarters + ':' + sixteenths;
+      }
       else {
+        eventEndTime = measures + ':' + quarters + ':' + sixteenths;
         toReturn.eventEndTime = measures + ':' + quarters + ':' + sixteenths;
       }
     }
@@ -93,8 +170,21 @@ app.factory("ShowFactory", function ($http) {
 
   };
 
+  factory.changeResolution = function () {
+    isQuarterResolution = !isQuarterResolution;
+    if (isQuarterResolution) {
+      notesPerMeasure = 4;
+    }
+    else {
+      notesPerMeasure = 8;
+    }
+  }
+
+
+  //seeds a show with empty objects and arrays
+
   factory.initializeShow = function () {
-    var show = {};
+    show = {};
     var eventGroupings = ['colors', 'text', 'phone'];
     show.events = [];
     show.savedTimelines = {};
@@ -108,6 +198,216 @@ app.factory("ShowFactory", function ($http) {
     show.events = [];
     show.settings = {};
     return show;
+  }
+
+  factory.getActiveArrayKey = function () {
+    return activeArrayKey;
+  }
+
+  factory.getStartingIdx = function () {
+    return startingIdx;
+  }
+
+  factory.getLastIdx = function () {
+    return lastIdx;
+  }
+
+  factory.getNewEvent = function () {
+    return _newEvent;
+  }
+
+  factory.isQuarterResolution = function () {
+    return isQuarterResolution;
+  }
+
+  factory.getNotesPerMeasure = function () {
+    return notesPerMeasure;
+  }
+
+  factory.resetEvent = function () {
+
+    //better to reset startingIdx, lastIdx to undefined rather
+    //than null because null seems to get treated like 0 when used
+    //in >= and <=
+
+    startingIdx = undefined;
+    lastIdx = undefined;
+    activeArrayKey = undefined;
+    eventStartTime = undefined;
+    eventEndTime = undefined;
+    _newEvent = {};
+  }
+
+  //one of the core factory functions, selectIdx
+  //sets the startingIdx & lastIdx values so as to
+  //determine which cells get highlighted based on
+  //user selection. it also has to detect if there are
+  //existing events on timeilne and not to overwrite those
+
+  factory.selectIdx = function (idx, checkArrayKey, isQuarterResolution, show) {
+    // console.log(scope.show);
+    if (activeArrayKey !== checkArrayKey) {
+      startingIdx = undefined;
+      lastIdx = undefined;
+    }
+
+    activeArrayKey = checkArrayKey;
+
+
+    //if idx inside of savedQuarters, ignore completely. startingIdx = undefined
+    // if (scope.show.savedTimelines.savedQuartersIdx)
+    var checkThisSavedIdx;
+    if (isQuarterResolution) {
+      checkThisSavedIdx = show.savedTimelines[activeArrayKey].savedQuartersIdx;
+    }
+    else {
+      checkThisSavedIdx = show.savedTimelines[activeArrayKey].savedEighthsIdx;
+    };
+
+
+    if (startingIdx === undefined) {
+      if (activeArrayKey === 'colors') {
+        if (checkThisSavedIdx[idx]) return;
+      }
+      else {
+        if (checkThisSavedIdx.indexOf(idx) >= 0) return;
+      }
+      startingIdx = idx;
+      lastIdx = idx;
+      console.log('here startingidx', startingIdx, 'lastIdx', lastIdx)
+    }
+    else if (startingIdx >= idx) {
+      startingIdx = undefined;
+      lastIdx = undefined;
+    }
+    else {
+      console.log('get into last else')
+      var iterator = startingIdx;
+
+      //collided tracks whether or not the user's click for lastIdx conflicts with an already
+      //existing event. if it detects a collision, we set collide to true. if there is no conflict,
+      //collide remains false. we'll use the collided boolean to calculate lastIdx
+
+
+      var collided = false;
+      if (activeArrayKey === 'colors') {
+        while (iterator < idx) {
+          console.log('iterator', iterator, 'idx', idx)
+          iterator++;
+          if (checkThisSavedIdx[iterator]) {
+            console.log('stops here', iterator)
+            collided = true;
+            break;
+          }
+          console.log('does this get added?', iterator)
+        }
+      }
+      else {
+        while (iterator < idx) {
+          iterator++;
+          if (checkThisSavedIdx.indexOf(iterator) >= 0) {
+            collided = true;
+            break;
+          }
+        }
+      }
+
+      //if there was a collision, we set the lastIdx to one index before the collision occurred
+      //if no collision, we set lastIdx to where user clicked
+
+      if (collided) lastIdx = iterator - 1;
+      else lastIdx = iterator;
+      console.log('collided?', collided, 'lastIdx', lastIdx, 'iterator', iterator, 'startingIdx', startingIdx, 'lastIdx', lastIdx)
+
+    }
+
+  }
+
+  factory.addAction = function (newEvent) {
+    _newEvent = newEvent;
+    if (!show.events)
+      show.events = [];
+
+    console.log(startingIdx, lastIdx);
+
+    // newEvent.time = eventStartTime;
+    // newEvent.endTime = eventEndTime;
+    _newEvent.startingIdx = startingIdx;
+    _newEvent.lastIdx = lastIdx;
+    _newEvent.activeArrayKey = activeArrayKey;
+    _newEvent.eventGrouping = activeArrayKey;
+    _newEvent.actionLabel = actionsObj[_newEvent.action].label;
+    if (_newEvent.action === 'fadeColorTo') {
+      _newEvent.preload = true;
+    }
+    console.log(_newEvent);
+    show.events.push(_newEvent);
+    factory.highlightSavedEvent(_newEvent);
+    factory.resetEvent();
+  }
+
+  factory.highlightSavedEvent = function (newEvent) {
+    show.savedTimelines[newEvent.activeArrayKey].savedEvents.push(newEvent);
+    var startingQuarterIdx;
+    var lastQuarterIdx;
+    var startingEighthIdx;
+    var lastEighthIdx;
+
+    if (isQuarterResolution) {
+      startingQuarterIdx = newEvent.startingIdx;
+      lastQuarterIdx = newEvent.lastIdx;
+      startingEighthIdx = factory.convertToIdx(eventStartTime, false);
+      lastEighthIdx = factory.convertToIdx(eventEndTime, false);
+    }
+    else {
+      startingQuarterIdx = factory.convertToIdx(eventStartTime, true)
+      lastQuarterIdx = factory.convertToIdx(eventEndTime, true)
+      startingEighthIdx = newEvent.startingIdx;
+      lastEighthIdx = newEvent.lastIdx;
+    }
+
+    if (newEvent.activeArrayKey === 'colors') {
+      for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
+        show.savedTimelines.colors.savedQuartersIdx[i] = newEvent.params.color;
+      }
+      for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
+        // console.log(j);
+        show.savedTimelines.colors.savedEighthsIdx[j] = j;
+        console.log(j, show.savedTimelines.colors.savedEighthsIdx[j]);
+      }
+    }
+    else {
+      for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
+        show.savedTimelines[newEvent.activeArrayKey].savedQuartersIdx.push(i);
+      }
+      for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
+        show.savedTimelines[newEvent.activeArrayKey].savedEighthsIdx.push(j);
+      }
+    }
+
+    console.log(show.savedTimelines);
+  }
+
+  factory.getDivHeight = function (idx) {
+    if (notesPerMeasure === 8) {
+      if (idx % 8 === 0) {
+        return lineHeights.bar;
+      }
+      else if (idx % 2 === 0) {
+        return lineHeights.quarter;
+      }
+      else {
+        return lineHeights.eighths;
+      }
+    }
+    else {
+      if (idx % 4 === 0) {
+        return lineHeights.bar;
+      }
+      else {
+        return lineHeights.quarter;
+      }
+    }
   }
 
 

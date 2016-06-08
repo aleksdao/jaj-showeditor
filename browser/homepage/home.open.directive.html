@@ -1,13 +1,13 @@
-<md-content>
-  <!-- <md-list >
+<md-content layout="column" flex>
+  <md-list>
     <md-list-item ng-repeat="show in shows track by $index">
-      <div>{{show.name}}</div>
+      {{show.name}}
     </md-list-item>
-  </md-list> -->
+  </md-list>
 
-  <md-radio-group ng-model="show.selected">
+  <!-- <md-radio-group ng-model="show.selected"> -->
     <!-- <p>Selected Show: <span class="radioValue"> {{ show.selected.name }}</span></p> -->
-    <md-radio-button ng-repeat="show in shows" ng-value="show">{{show.name}}</md-radio-button>
-  </md-radio-group>
+    <!-- <md-radio-button ng-repeat="show in shows" ng-value="show">{{show.name}}</md-radio-button>
+  </md-radio-group> -->
   <md-button class="md-accent" ui-sref="editShow({ id: show.selected._id })">Open Show</md-button>
 </md-content>

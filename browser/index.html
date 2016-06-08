@@ -26,12 +26,14 @@
     <script src="main.js"></script>
     <script src="app.controller.js"></script>
     <script src="show.states.js"></script>
-    <script src="show.create.directive.js"></script>
+    <script src="event.inputs.directive.js"></script>
     <script src="factories/show.factory.js"></script>
     <script src="homepage/home.create.directive.js"></script>
     <script src="homepage/home.open.directive.js"></script>
     <script src="timeline/timeline.interval.directive.js"></script>
     <script src="show.template.directive.js"></script>
+    <script src="saved.events.directive.js"></script>
+
 
   </head>
 <body ng-app="showEditor" ng-controller="AppCtrl">
@@ -39,10 +41,6 @@
   <div>
     <h3>Create Show</h3>
     <md-button class="md-raised" ui-sref="createShow">Create Show</md-button>
-  </div>
-  <div>
-    <h3>Edit Shows</h3>
-    <md-button class="md-raised" ng-repeat="show in shows" ui-sref="editShow({ id: show._id })">{{ show.name }} Show</md-button>
   </div>
   <md-divider></md-divider>
 

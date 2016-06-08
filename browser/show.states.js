@@ -22,8 +22,8 @@ app.config(function ($stateProvider) {
       url: '/shows/create',
       templateUrl: '/show.new.state.html',
       params: {
-        showName: {},
-        bpm: {}
+        showName: undefined,
+        bpm: undefined
       },
       controller: function ($scope, ShowFactory, $stateParams) {
 
