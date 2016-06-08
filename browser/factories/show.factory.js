@@ -12,7 +12,17 @@ app.factory("ShowFactory", function ($http) {
   var eventStartTime;
   var eventEndTime;
   var show;
+  // var width;
   var isQuarterResolution = false;
+
+  var notesPerMeasure = 8;
+
+  var lineHeights = {
+    bar: 32,
+    quarter: 8,
+    eighths: 4
+  }
+
 
   var eventGroupings = {
     colors: {
@@ -160,6 +170,17 @@ app.factory("ShowFactory", function ($http) {
 
   };
 
+  factory.changeResolution = function () {
+    isQuarterResolution = !isQuarterResolution;
+    if (isQuarterResolution) {
+      notesPerMeasure = 4;
+    }
+    else {
+      notesPerMeasure = 8;
+    }
+  }
+
+
   //seeds a show with empty objects and arrays
 
   factory.initializeShow = function () {
@@ -184,7 +205,6 @@ app.factory("ShowFactory", function ($http) {
   }
 
   factory.getStartingIdx = function () {
-    console.log(startingIdx);
     return startingIdx;
   }
 
@@ -194,6 +214,14 @@ app.factory("ShowFactory", function ($http) {
 
   factory.getNewEvent = function () {
     return _newEvent;
+  }
+
+  factory.isQuarterResolution = function () {
+    return isQuarterResolution;
+  }
+
+  factory.getNotesPerMeasure = function () {
+    return notesPerMeasure;
   }
 
   factory.resetEvent = function () {
@@ -246,13 +274,14 @@ app.factory("ShowFactory", function ($http) {
       }
       startingIdx = idx;
       lastIdx = idx;
-
+      console.log('here startingidx', startingIdx, 'lastIdx', lastIdx)
     }
     else if (startingIdx >= idx) {
       startingIdx = undefined;
       lastIdx = undefined;
     }
     else {
+      console.log('get into last else')
       var iterator = startingIdx;
 
       //collided tracks whether or not the user's click for lastIdx conflicts with an already
@@ -263,20 +292,23 @@ app.factory("ShowFactory", function ($http) {
       var collided = false;
       if (activeArrayKey === 'colors') {
         while (iterator < idx) {
+          console.log('iterator', iterator, 'idx', idx)
+          iterator++;
           if (checkThisSavedIdx[iterator]) {
+            console.log('stops here', iterator)
             collided = true;
             break;
           }
-          iterator++;
+          console.log('does this get added?', iterator)
         }
       }
       else {
         while (iterator < idx) {
+          iterator++;
           if (checkThisSavedIdx.indexOf(iterator) >= 0) {
             collided = true;
             break;
           }
-          iterator++;
         }
       }
 
@@ -285,10 +317,10 @@ app.factory("ShowFactory", function ($http) {
 
       if (collided) lastIdx = iterator - 1;
       else lastIdx = iterator;
+      console.log('collided?', collided, 'lastIdx', lastIdx, 'iterator', iterator, 'startingIdx', startingIdx, 'lastIdx', lastIdx)
+
     }
 
-
-    // console.log(scope.startingIdx, scope.lastIdx, arrayKey);
   }
 
   factory.addAction = function (newEvent) {
@@ -339,7 +371,9 @@ app.factory("ShowFactory", function ($http) {
         show.savedTimelines.colors.savedQuartersIdx[i] = newEvent.params.color;
       }
       for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
-        show.savedTimelines.colors.savedEighthsIdx[j] = newEvent.params.color;
+        // console.log(j);
+        show.savedTimelines.colors.savedEighthsIdx[j] = j;
+        console.log(j, show.savedTimelines.colors.savedEighthsIdx[j]);
       }
     }
     else {
@@ -352,6 +386,28 @@ app.factory("ShowFactory", function ($http) {
     }
 
     console.log(show.savedTimelines);
+  }
+
+  factory.getDivHeight = function (idx) {
+    if (notesPerMeasure === 8) {
+      if (idx % 8 === 0) {
+        return lineHeights.bar;
+      }
+      else if (idx % 2 === 0) {
+        return lineHeights.quarter;
+      }
+      else {
+        return lineHeights.eighths;
+      }
+    }
+    else {
+      if (idx % 4 === 0) {
+        return lineHeights.bar;
+      }
+      else {
+        return lineHeights.quarter;
+      }
+    }
   }
 
 

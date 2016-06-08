@@ -1,0 +1,37 @@
+  <md-content style="margin:auto;width:90%">
+  <div layout="column">
+    <p ng-show="newEvent.time">Event Start Time: {{newEvent.time}}</p>
+    <p ng-show="newEvent.endTime">Event Start Time: {{newEvent.endTime}}</p>
+    <!-- <div ng-show="!activeArrayKey">Click the timeline again to add another event</div> -->
+    <form name="newEventForm" ng-show="activeArrayKey">
+
+    <md-input-container>
+      <label>Select Action</label>
+      <md-select ng-model="newEvent.action">
+        <md-select-header>
+          <span> Action - </span>
+        </md-select-header>
+        <md-option ng-value="action" required ng-repeat="action in eventGroupings[activeArrayKey].actions">{{ actionsObj[action].label }}</md-option>
+      </md-select>
+    </md-input-container>
+    <div ng-show="activeArrayKey === 'colors'">
+      <div  md-color-picker
+            ng-model="newEvent.params.color"
+            label="Choose a Color"
+            icon="brush"
+            default="f00"
+            md-color-generic-palette="false"
+            md-color-history="false">
+      </div>
+    </div>
+    <md-input-container
+      ng-show="activeArrayKey !== 'colors'"
+      ng-repeat="param in actionsObj[newEvent.action].params">
+      <label>{{ param }}</label>
+      <input ng-model="newEvent.params[param]">
+    </md-input-container>
+    </form>
+</div>
+</md-content>
+
+<!-- <md-divider ng-if="show.events"></md-divider> -->

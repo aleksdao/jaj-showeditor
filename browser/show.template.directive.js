@@ -9,6 +9,10 @@ app.directive('showTemplate', function () {
         { title: 'Preview'}
       ];
 
+      // var self = this;
+      // var data = $scope.show.events;
+      // self.tableParams = new NgTableParams({}, { dataset: data });
+
       $scope.selectIdx = function (idx, checkArrayKey) {
         ShowFactory.selectIdx(idx, checkArrayKey, $scope.isQuarterResolution, $scope.show);
         $scope.newEvent = ShowFactory.getNewEvent();

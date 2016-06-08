@@ -1,6 +1,6 @@
 {{show}}
 {{newEvent}}
-<md-content layout-padding>
+<md-content style="margin: auto;width:90%">
   <md-title>
     <h1 class="md-display-2" placeholder="Show Name" editable-text="show.name"></h1>
   </md-title>
@@ -10,9 +10,10 @@
       <md-tab ng-repeat="tab in tabs" label="{{ tab.title }}"></md-tab>
     </md-tabs>
   </div>
-</md-content>
-<md-switch ng-disabled="false" ng-model="isQuarterResolution" ng-change="changeToResolution(isQuarterResolution)">{{ isQuarterResolution ? "quarter note" : "eighth note" }}</md-switch>
-<md-content flex>
+
+
+<md-switch ng-disabled="false" ng-model="isQuarterResolution" ng-change="changeResolution(isQuarterResolution)">{{ isQuarterResolution ? "quarter note" : "eighth note" }}</md-switch>
+<md-content class="timelines" style="border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black" flex>
   <div layout="row" ng-repeat="(eventGrouping, array) in timelinesArray">
     <div style="height:33px" ng-repeat="line in array track by $index" ng-click="selectIdx($index, eventGrouping)"
           ng-class="{ 'selected1' : highlightCellOrNot($index, eventGrouping, 'colors'),
@@ -23,5 +24,34 @@
     </div>
   </div>
 </md-content>
-<span ng-show="newEvent.time">{{newEvent.time}} || {{eventEndTime}}</span>
-<add-event></add-event>
+<md-divider style="margin-top:25px"></md-divider>
+
+<div layout="row">
+    <div ng-show="activeArrayKey" flex="45">
+      <md-title><h2>Adding Event</h2></md-title>
+      <md-card style="margin-right:10px">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{actionsObj[newEvent.action].label || 'Select Action Below'}}</span>
+            <span class="md-subheader" ng-show="newEvent.action">{{activeArrayKey}}</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+
+          <event-inputs></event-inputs>
+          <md-button style="margin-top:10px" ng-click="addAction()" class="md-primary md-raised">Add action</md-button>
+        </md-card-content>
+      </md-card>
+    </div>
+    <div ng-show="!activeArrayKey" flex-offset="5" flex="45">
+      <h2>Click somewhere on timeline to add an event!</h2>
+    </div>
+    <div flex="50">
+      <div ng-show="show.events.length > 0">
+        <md-title><h2>Saved events</h2></md-title>
+        <saved-events></saved-events>
+
+      </div>
+    </div>
+</div>
+</md-content>

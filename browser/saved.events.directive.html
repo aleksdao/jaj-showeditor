@@ -1,0 +1,42 @@
+
+  <md-card style="margin-left:10px">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Figure out Card title</span>
+        <span class="md-subheader" ng-show="newEvent.action">Anything here?</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+
+      <table ng-table="tableParams" class="table" show-filter="true">
+        <tr ng-repeat="event in show.events">
+            <td title="'Start time Action'">
+              {{event.time}}
+            </td>
+            <td title="'End Time'">
+              {{event.endTime}}
+            </td>
+            <td title="'Event Grouping'">
+              {{eventGroupings[event.eventGroupings].label}}
+            </td>
+            <td title="'Action'">
+              {{actionsObj[event.action].label}}
+            </td>
+
+        </tr>
+      </table>
+
+      <form name="createShowForm">
+        <md-input-container>
+          <label>Show Name</label>
+          <input ng-model="show.name" required>
+        </md-input-container>
+        <md-input-container>
+          <input mdc-datetime-picker date="true" time="true" type="text" id="time" short-time="true"
+            placeholder="Time"
+            ng-model="show.startTime">
+            {{show.startTime}}
+        </md-input-container>
+        <md-button ng-show="show.events.length > 0" ng-click="createShow()" class="md-raised">Create show</md-button>
+      </form>
+    </md-card-content>

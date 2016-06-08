@@ -1,20 +1,15 @@
+/*body {
+  font-family: Noto;
+  font-style: normal;
+}*/
+
 hr {
   width: 100px;
 }
 
 .timelines {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-span.ruler {
-  height: 1px;
-}
-
-div.ruler1 {
-  /*height: 1px;*/
-  length: 100px;
-  border-top: 1px;
+  margin: auto;
+  width: 90%;
 }
 
 div.selected1 {
