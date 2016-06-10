@@ -7,6 +7,85 @@ hr {
   width: 100px;
 }
 
+.navbar-header {
+  background-color: #000000;
+}
+
+.header-navigation {
+  color: #FFFFFF;
+  margin: auto;
+  width: 80%
+}
+
+.header-navigation ul {
+  list-style: none;
+  text-align: center;
+  margin-bottom: 0px;
+  padding-left: 0px;
+}
+
+.header-navigation li {
+  color: #000;
+  background-color: #FFF;
+  font-size: 1.2em;
+  line-height: 30px;
+  transition: .3s color;
+  display: inline-block;
+  padding: 5px;
+  margin: 5px 5px 0px 5px;
+  border-bottom: 1px solid;
+  border-color: #000;
+  /*border: 1px solid;*/
+  /*border-color: #FFF;*/
+}
+
+.header-navigation li.test {
+  color: #FFF;
+  background-color: #000;
+  /*border: none;*/
+  /*background-color: */
+}
+
+.header-navigation li:hover {
+  /*background-color: rgb(89, 226, 168);*/
+  border-color: rgb(89, 226, 168);
+  color: rgb(89, 226, 168);
+  border-bottom: 1px solid;
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 0px;
+}
+
+.header-navigation li.active {
+  background-color:rgb(89, 226, 168);
+  color: #000;
+  cursor: default;
+}
+
+md-nav-item {
+  color: #FFFFFF;
+}
+
+.header-navigation li.test1 {
+  color: #FFF;
+  background-color: #000;
+
+  /*background-color: */
+}
+
+#test2 {
+  color: #FFF;
+  background-color:rgb(89, 226, 168);
+
+}
+
+#test3 {
+  color:rgb(89, 226, 168);
+  background-color: #000;
+    border: none;
+
+}
+
 .timelines {
   margin: auto;
   width: 90%;
@@ -26,4 +105,12 @@ div.selected3 {
 
 timeline-directive.not-selected {
   background-color: white;
+}
+
+tr.saved-event:hover {
+  background-color: #FAC5C5;
+}
+
+md-divider {
+  color: #FFF;
 }

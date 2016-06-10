@@ -346,6 +346,26 @@ app.factory("ShowFactory", function ($http) {
     factory.resetEvent();
   }
 
+  factory.grabQandEIdx = function (event) {
+    var startingQuarterIdx;
+    var lastQuarterIdx;
+    var startingEighthIdx;
+    var lastEighthIdx;
+
+    if (isQuarterResolution) {
+      startingQuarterIdx = newEvent.startingIdx;
+      lastQuarterIdx = newEvent.lastIdx;
+      startingEighthIdx = factory.convertToIdx(eventStartTime, false);
+      lastEighthIdx = factory.convertToIdx(eventEndTime, false);
+    }
+    else {
+      startingQuarterIdx = factory.convertToIdx(eventStartTime, true)
+      lastQuarterIdx = factory.convertToIdx(eventEndTime, true)
+      startingEighthIdx = newEvent.startingIdx;
+      lastEighthIdx = newEvent.lastIdx;
+    }
+  }
+
   factory.highlightSavedEvent = function (newEvent) {
     show.savedTimelines[newEvent.activeArrayKey].savedEvents.push(newEvent);
     var startingQuarterIdx;
@@ -372,7 +392,7 @@ app.factory("ShowFactory", function ($http) {
       }
       for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
         // console.log(j);
-        show.savedTimelines.colors.savedEighthsIdx[j] = j;
+        show.savedTimelines.colors.savedEighthsIdx[j] = newEvent.params.color;
         console.log(j, show.savedTimelines.colors.savedEighthsIdx[j]);
       }
     }
@@ -409,6 +429,59 @@ app.factory("ShowFactory", function ($http) {
       }
     }
   }
+
+  factory.removeIdx = function (event) {
+    var startingQuarterIdx;
+    var lastQuarterIdx;
+    var startingEighthIdx;
+    var lastEighthIdx;
+
+    if (isQuarterResolution) {
+      startingQuarterIdx = event.startingIdx;
+      lastQuarterIdx = event.lastIdx;
+      startingEighthIdx = factory.convertToIdx(event.time, false);
+      lastEighthIdx = factory.convertToIdx(event.endTime, false);
+    }
+    else {
+      startingQuarterIdx = factory.convertToIdx(event.time, true);
+      lastQuarterIdx = factory.convertToIdx(event.endTime, true);
+      startingEighthIdx = event.startingIdx;
+      lastEighthIdx = event.lastIdx;
+    }
+
+    if (event.eventGrouping === 'colors') {
+      for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
+        show.savedTimelines.colors.savedQuartersIdx[i] = null;
+      }
+      for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
+        // console.log(j);
+        show.savedTimelines.colors.savedEighthsIdx[j] = null;
+        console.log(j, show.savedTimelines.colors.savedEighthsIdx[j]);
+      }
+    }
+    else {
+      for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
+        var idxToRemove = show.savedTimelines[event.activeArrayKey].savedQuartersIdx.indexOf(i);
+        show.savedTimelines[event.activeArrayKey].savedQuartersIdx.splice(idxToRemove);
+      }
+      for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
+        var idxToRemove = show.savedTimelines[event.activeArrayKey].savedQuartersIdx.indexOf(j);
+        show.savedTimelines[event.activeArrayKey].savedEighthsIdx.splice(idxToRemove);
+      }
+    }
+
+  }
+
+  factory.getCurrentShow = function () {
+    return show;
+  }
+
+  factory.removeEvent = function (idx) {
+    factory.removeIdx(show.events[idx]);
+    show.events.splice(idx, 1);
+  }
+
+
 
 
   return factory;

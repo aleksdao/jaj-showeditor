@@ -38,10 +38,24 @@
   </head>
 <body ng-app="showEditor" ng-controller="AppCtrl">
 
-  <div>
-    <h3>Create Show</h3>
-    <md-button class="md-raised" ui-sref="createShow">Create Show</md-button>
+  <header>
+  <div class="navbar-header">
+    <div class="header-navigation" layout="row">
+      <ul>
+        <li class="editor active">Editor</li>
+        <li class="runner">Show Runner</li>
+        <li class="test">Test Colors</li>
+        <li class="test1">Test Colors 1</li>
+        <li id="test2">Test Colors 2</li>
+        <li id="test3">Test Colors 3</li>
+
+
+
+      </ul>
+
+    </div>
   </div>
+</header>
   <md-divider></md-divider>
 
   <ui-view></ui-view>
