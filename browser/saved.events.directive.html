@@ -2,14 +2,14 @@
   <md-card style="margin-left:10px">
     <md-card-title>
       <md-card-title-text>
-        <span class="md-headline">Figure out Card title</span>
+        <span class="md-headline">Figure out Card title (click on line item to remove from show)</span>
         <span class="md-subheader" ng-show="newEvent.action">Anything here?</span>
       </md-card-title-text>
     </md-card-title>
     <md-card-content>
 
       <table ng-table="tableParams" class="table" show-filter="true">
-        <tr ng-repeat="event in show.events">
+        <tr ng-click="removeEvent($index)" class="saved-event" ng-repeat="event in show.events">
             <td title="'Start time Action'">
               {{event.time}}
             </td>
