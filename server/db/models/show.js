@@ -27,6 +27,9 @@ var showSchema = new mongoose.Schema({
   },
   savedTimelines: {
     type: Object
+  }.
+  song_path: {
+    type: String
   }
 });
 
