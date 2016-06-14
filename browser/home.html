@@ -1,13 +1,32 @@
 issues with using layout="row"
 
-<div id="home" layout="column" layout-align="center center">
+<div id="home" flex-offset="25" flex="50"  layout="column" layout-align="center center">
   <!-- <div><h1>Sequence Editor</h1></div> -->
   <div><h1>Sequence Editor</h1></div>
-  <div>
+  <!-- <div>
     <md-button ng-click="makeActive($index)" ng-repeat="option in options" ng-class="{ 'active' : active === $index }">{{ option }}</md-button>
-  </div>
-  <hr />
+  </div> -->
+  <md-content layout="row">
+    <md-tabs md-center-tabs="true" md-no-pagination="true" md-dynamic-height>
+      <md-tab label="Create">
+        <md-content layout-padding>
+          <home-create></home-create>
+        </md-content>
+      </md-tab>
+      <md-tab label="Open">
+        <md-content layout-padding>
+          <home-open shows="shows"></home-open>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+
+
+
+
+
+  <!-- <hr /> -->
   <!-- <ui-view></ui-view> -->
-  <home-create ng-show="activeIdx === 0"></home-create>
-  <home-open ng-show="activeIdx === 1" shows="shows"></home-open>
+  <!-- <home-create ng-show="activeIdx === 0"></home-create>
+  <home-open ng-show="activeIdx === 1" shows="shows"></home-open> -->
 </div>
