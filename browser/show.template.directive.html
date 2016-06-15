@@ -13,16 +13,24 @@
 
 
 <md-switch ng-disabled="false" ng-model="isQuarterResolution" ng-change="changeResolution(isQuarterResolution)">{{ isQuarterResolution ? "quarter note" : "eighth note" }}</md-switch>
-<md-content class="timelines" style="border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black" flex>
-  <div layout="row" ng-repeat="(eventGrouping, array) in timelinesArray">
-    <div style="height:33px" ng-repeat="line in array track by $index" ng-click="selectIdx($index, eventGrouping)"
-          ng-class="{ 'selected1' : highlightCellOrNot($index, eventGrouping, 'colors'),
-      'selected2' : highlightCellOrNot($index, eventGrouping, 'text'),
-      'selected3' : highlightCellOrNot($index, eventGrouping, 'phone') }"
-      ng-style="(isCurrentTimeline($index, startingIdx, lastIdx, eventGrouping, 'colors') && { 'backgroundColor': newEvent.params.color }) || (isAddedToShow($index, eventGrouping, 'colors') && { 'backgroundColor' : isAddedToShow($index, eventGrouping, 'colors') })">
-      <timeline-directive index="{{$index}}" starting-idx="{{startingIdx}}" last-idx="{{lastIdx}}" event-grouping="{{eventGrouping}}" data="data" notes-per-measure="{{notesPerMeasure}}" height-key="{{getDivHeight($index)}}" width-key="16"></timeline-directive>
-    </div>
+<md-content layout="row">
+  <div layout="column" layout-align="center">
+    <div style="height:33px" ng-repeat="(eventGrouping, array) in timelinesArray">{{eventGrouping | uppercase}}</div>
   </div>
+
+  <md-content class="timelines" style="border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black; margin-left:5px" layout="row" flex>
+    <div layout="column">
+      <div layout="row" ng-repeat="(eventGrouping, array) in timelinesArray">
+        <div style="height:33px" ng-repeat="line in array track by $index" ng-click="selectIdx($index, eventGrouping)"
+              ng-class="{ 'selected1' : highlightCellOrNot($index, eventGrouping, 'colors'),
+          'selected2' : highlightCellOrNot($index, eventGrouping, 'text'),
+          'selected3' : highlightCellOrNot($index, eventGrouping, 'phone') }"
+          ng-style="(isCurrentTimeline($index, startingIdx, lastIdx, eventGrouping, 'colors') && { 'backgroundColor': newEvent.params.color }) || (isAddedToShow($index, eventGrouping, 'colors') && { 'backgroundColor' : isAddedToShow($index, eventGrouping, 'colors') })">
+          <timeline-directive index="{{$index}}" starting-idx="{{startingIdx}}" last-idx="{{lastIdx}}" event-grouping="{{eventGrouping}}" data="data" notes-per-measure="{{notesPerMeasure}}" height-key="{{getDivHeight($index)}}" width-key="16"></timeline-directive>
+        </div>
+      </div>
+    </div>
+</md-content>
 </md-content>
 <md-divider style="margin-top:25px"></md-divider>
 
@@ -32,14 +40,14 @@
       <md-card style="margin-right:10px">
         <md-card-title>
           <md-card-title-text>
-            <span class="md-headline">{{actionsObj[newEvent.action].label || 'Select Action Below'}}</span>
+            <span class="md-headline md-accent">{{actionsObj[newEvent.action].label || 'Select Action Below'}}</span>
             <span class="md-subheader" ng-show="newEvent.action">{{activeArrayKey}}</span>
           </md-card-title-text>
         </md-card-title>
-        <md-card-content>
+        <md-card-content style="padding-left:10px">
 
-          <event-inputs></event-inputs>
-          <md-button style="margin-top:10px" ng-click="addAction()" class="md-primary md-raised">Add action</md-button>
+          <event-inputs style="padding-left:10px"></event-inputs>
+          <md-button style="margin-top:10px" ng-click="addAction()" class="md-raised md-accent"><span class="md-primary">Add action</span></md-button>
         </md-card-content>
       </md-card>
     </div>
