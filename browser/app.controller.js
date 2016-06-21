@@ -7,9 +7,18 @@ app.controller('AppCtrl', function ($scope, ShowFactory) {
   }
 
   $scope.timelinesArray = {
-    colors: Array(200),
-    text: Array(200),
-    phone: Array(200)
+    colors: {
+      array: Array(200),
+      icon: 'color_lens'
+    },
+    text: {
+      array: Array(200),
+      icon: 'text_format'
+    },
+    phone: {
+      array: Array(200),
+      icon: 'smartphone'
+    }
   }
 
   ShowFactory.getShows()
