@@ -1,11 +1,11 @@
-  <md-content style="margin:auto;width:90%">
+  <md-content style="margin:auto;width:90%;padding-left:10px">
   <div layout="column">
     <p ng-show="newEvent.time">Event Start Time: {{newEvent.time}}</p>
     <p ng-show="newEvent.endTime">Event Start Time: {{newEvent.endTime}}</p>
     <!-- <div ng-show="!activeArrayKey">Click the timeline again to add another event</div> -->
     <form name="newEventForm" ng-show="activeArrayKey">
 
-    <md-input-container>
+    <md-input-container style="margin-top:10px">
       <label>Select Action</label>
       <md-select ng-model="newEvent.action">
         <md-select-header>

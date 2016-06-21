@@ -2,7 +2,12 @@
 
 var app = angular.module('showEditor', ['gg.editableText', 'ngMaterial', 'ngTable', 'ngMaterialDatePicker', 'ui.router', 'mdColorPicker']);
 
-app.config(function ($urlRouterProvider, $locationProvider) {
+app.config(function ($urlRouterProvider, $locationProvider, $mdThemingProvider) {
   $locationProvider.html5Mode(true);
-  // $urlRouterProvider.otherwise('/show/edit');
+  $mdThemingProvider.theme('default')
+     .primaryPalette('grey')
+     .accentPalette('teal', {
+       default:'A400'
+     })
+     .dark();
 })

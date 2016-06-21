@@ -246,6 +246,7 @@ app.factory("ShowFactory", function ($http) {
 
   factory.selectIdx = function (idx, checkArrayKey, isQuarterResolution, show) {
     // console.log(scope.show);
+    // if (!_newEvent) _newEvent = {};
     if (activeArrayKey !== checkArrayKey) {
       startingIdx = undefined;
       lastIdx = undefined;
@@ -276,9 +277,11 @@ app.factory("ShowFactory", function ($http) {
       lastIdx = idx;
       console.log('here startingidx', startingIdx, 'lastIdx', lastIdx)
     }
-    else if (startingIdx >= idx) {
+    else if (startingIdx > idx) {
       startingIdx = undefined;
       lastIdx = undefined;
+      activeArrayKey = undefined;
+      _newEvent.action = undefined;
     }
     else {
       console.log('get into last else')

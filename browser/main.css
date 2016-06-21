@@ -7,6 +7,22 @@ hr {
   width: 100px;
 }
 
+body {
+  font-family: "Raleway", sans-serif;
+}
+
+.logo {
+  font-weight: 200;
+  font-size: 40px;
+  text-align: center;
+}
+
+md-sidenav {
+  padding: 20px;
+  height: 100%;
+  width: 110px;
+}
+
 .navbar-header {
   background-color: #000000;
 }
