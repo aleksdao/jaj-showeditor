@@ -1,11 +1,32 @@
 <md-content layout="column" layout-align="center center">
-  <md-input-container class="md-block">
-    <label>Show Name</label>
-    <input name="name" ng-model="show.name">
-  </md-input-container>
-  <md-input-container class="md-block">
-    <label>BPM</label>
-    <input name="bpm" ng-model="show.bpm">
-  </md-input-container>
-  <md-button ui-sref="createShow({ 'showName' : show.name, 'bpm' : show.bpm })" class="md-accent">Create</md-button>
+  <form name="showForm" layout="column">
+    <md-input-container class="md-block">
+      <label>Show Name</label>
+      <input name="name" ng-model="show.name">
+    </md-input-container>
+    <md-input-container class="md-block">
+      <label>BPM</label>
+      <input name="bpm" ng-model="show.bpm">
+    </md-input-container>
+
+    <div class="md-block">
+    <!-- <md-input-container>
+      <input type="file" id="file" />
+    </md-input-container> -->
+    <!-- <md-button class="md-raised"><input type="file" id="file1" /></md-button>
+    <md-button class="md-raised"><input type="file" id="file2" /></md-button> -->
+
+      <lf-ng-md-file-input name="fileUpload" lf-browse-label="Browse" lf-caption="" lf-required accept="audio/*" lf-files="files"></lf-ng-md-file-input>
+      <div ng-messages="showForm.fileUpload.$error" ng-show="!showForm.fileUpload.$pristine" style="color:red">
+        <div ng-message="required">This is required.</div>
+      </div>
+      <div layout="column" layout-align="center center" ng-show="song.name"><button class="md-raised md-primary lf-ng-md-file-input-button md-ink-ripple md-button"><md-icon md-font-set="material-icons">music_note</md-icon>{{song.name}}</button></div>
+      <!-- <md-input-container ng-show="song.name">
+        <label>Song</label>
+        <input type="text" ng-model="song.name">
+      </md-input-container> -->
+
+    </div>
+    <md-button style="margin-top:20px" ui-sref="createShow({ 'showName' : show.name, 'bpm' : show.bpm, 'songName' : song.name, 'songDuration' : song.duration })" class="md-accent">Create</md-button>
+  </form>
 </md-content>

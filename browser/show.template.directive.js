@@ -2,7 +2,32 @@ app.directive('showTemplate', function () {
   return {
     templateUrl: '/show.template.directive.html',
     controller: function ($scope, ShowFactory) {
+      var numMeasures;
+      var totalEighthNotes;
 
+      function calculateNumMeasures () {
+        //rounding up
+        numMeasures = Math.ceil($scope.song.duration / (240 / $scope.show.settings.bpm));
+        console.log(numMeasures);
+        totalEighthNotes = numMeasures * 8;
+      }
+
+      calculateNumMeasures();
+
+      $scope.timelinesArray = {
+        colors: {
+          array: Array(totalEighthNotes),
+          icon: 'color_lens'
+        },
+        text: {
+          array: Array(totalEighthNotes),
+          icon: 'text_format'
+        },
+        phone: {
+          array: Array(totalEighthNotes),
+          icon: 'smartphone'
+        }
+      }
 
       $scope.tabs = [
         { title: 'Edit' },

@@ -30,6 +30,9 @@ var showSchema = new mongoose.Schema({
   },
   song_path: {
     type: String
+  },
+  song: {
+    type: Object
   }
 });
 

@@ -14,7 +14,10 @@ app.use(bodyParser.json());
 
 app.use('/node_modules', express.static(path.join(__dirname, '../node_modules')));
 app.use('/bower_components', express.static(path.join(__dirname, '../bower_components')));
+app.use('/public', express.static(path.join(__dirname, '../public')));
 app.use(express.static(path.join(__dirname, '../browser')));
+
+
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
