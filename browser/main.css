@@ -20,8 +20,9 @@ body {
 md-sidenav {
   padding: 20px;
   height: 100%;
-  width: 110px;
+  width: 220px;
 }
+
 
 .navbar-header {
   background-color: #000000;
@@ -129,4 +130,8 @@ tr.saved-event:hover {
 
 md-divider {
   color: #FFF;
+}
+
+#file1 {
+  font-family: "Raleway", sans-serif;
 }

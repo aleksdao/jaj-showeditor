@@ -21,7 +21,8 @@
     "angular-editable-text": "^1.1.2",
     "jquery-ui": "^1.11.4",
     "angular-ui-router": "^0.3.0",
-    "md-color-picker": "^0.2.6"
+    "md-color-picker": "^0.2.6",
+    "lf-ng-md-file-input": "^1.4.7"
   },
   "resolutions": {
     "angular": ">=1.5.0"
