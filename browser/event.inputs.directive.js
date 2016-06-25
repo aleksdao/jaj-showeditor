@@ -39,20 +39,20 @@ app.directive('eventInputs', function (NgTableParams, ShowFactory) {
       // NEED TO REVISIT. ACCOUNT FOR EIGHTHTS SWITCHING TO QTR NOTES
       // NOT BEING ACCURATELY MEASURED
 
-      scope.changeResolution = function (isQuarterResolution) {
-
-        // isQuarterResolution ? scope.data.notesPerMeasure = 4 : scope.data.notesPerMeasure = 8;
-        ShowFactory.changeResolution();
-        scope.data.notesPerMeasure = ShowFactory.getNotesPerMeasure();
-        scope.isQuarterResolution = ShowFactory.isQuarterResolution();
-
-        if (scope.startingIdx) {
-          scope.startingIdx = ShowFactory.convertToIdx(scope.newEvent.time, isQuarterResolution);
-          scope.lastIdx = ShowFactory.convertToIdx(scope.newEvent.endTime, isQuarterResolution);
-        }
-
-        console.log(scope.startingIdx, scope.lastIdx);
-      }
+      // scope.changeResolution = function (isQuarterResolution) {
+      //
+      //   // isQuarterResolution ? scope.data.notesPerMeasure = 4 : scope.data.notesPerMeasure = 8;
+      //   ShowFactory.changeResolution();
+      //   scope.data.notesPerMeasure = ShowFactory.getNotesPerMeasure();
+      //   scope.isQuarterResolution = ShowFactory.isQuarterResolution();
+      //
+      //   if (scope.startingIdx) {
+      //     scope.startingIdx = ShowFactory.convertToIdx(scope.newEvent.time, isQuarterResolution);
+      //     scope.lastIdx = ShowFactory.convertToIdx(scope.newEvent.endTime, isQuarterResolution);
+      //   }
+      //
+      //   console.log(scope.startingIdx, scope.lastIdx);
+      // }
 
       scope.getDivHeight = function (idx) {
 

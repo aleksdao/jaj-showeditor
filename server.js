@@ -14,3 +14,18 @@ db.connect()
   }, function (err){
     console.log(chalk.red(err));
   });
+
+var request = require('request');
+var cheerio = require('cheerio');
+var url = 'https://songbpm.com/x-ambassadors/renegades';
+
+request(url, function (error, response, body) {
+  if (!error) {
+    var $ = cheerio.load(body);
+    var bpm = $("#search-results .number").html()
+    console.log(bpm);
+  }
+  else {
+    console.log('error');
+  }
+})

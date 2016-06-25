@@ -5,35 +5,35 @@ app.directive('homeCreate', function () {
       // var audioElem = angular.element(document.querySelector('#audio'));
       $scope.song = {};
       $scope.show = {
-        bpm: 60
-      };
+        settings: {
+          bpm: 60
+        },
+        song: {}
+      }
       var audio = document.createElement('audio');
       var songPath = '../../public/songs/';
       $scope.$watch('files.length', function (newVal, oldVal) {
         console.log($scope.files);
         if ($scope.files) {
           if ($scope.files.length) {
-            $scope.song.name = $scope.files[0].lfFileName;
-            // audioElem.prop('src', songPath + $scope.files[0].lfFileName);
-            audio.src = songPath + $scope.song.name;
+            $scope.show.song.fileName = $scope.files[0].lfFileName;
+            $scope.show.song.name = $scope.files[0].lfFileName.split('.')[0];
+
+            audio.src = songPath + $scope.show.song.fileName;
             // console.log(audioElem, audioElem.prop('src'));
             // console.log(audioElem, audioElem.prop('duration'));
-            console.log(audio);
             audio.load();
-
 
           }
         }
 
-        // audioElem.on('onloadedmetadata', function (e) {
-        //   console.log(e.currentTarget);
-        // })
 
         audio.addEventListener('canplaythrough', function (e) {
           console.log(audio, e)
           console.log(audio.duration);
-          $scope.song.duration = audio.duration;
-          console.log($scope.song);
+          $scope.show.song.duration = audio.duration;
+          $scope.$digest();
+          console.log('were here', $scope.show, $scope.show.song.duration);
         })
 
       })
