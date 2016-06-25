@@ -22,17 +22,12 @@ app.config(function ($stateProvider) {
       url: '/shows/create',
       templateUrl: '/show.new.state.html',
       params: {
-        showName: undefined,
-        bpm: undefined,
-        songName: undefined,
-        songDuration: undefined
+        show: undefined
       },
       controller: function ($scope, ShowFactory, $stateParams) {
 
           $scope.show = ShowFactory.initializeShow($stateParams);
           console.log($scope.show);
-          // $scope.show.name = $stateParams.showName;
-          // $scope.show.settings.bpm = $stateParams.bpm;
 
       }
     })

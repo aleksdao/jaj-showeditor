@@ -184,7 +184,7 @@ app.factory("ShowFactory", function ($http) {
   //seeds a show with empty objects and arrays
 
   factory.initializeShow = function (stateParams) {
-    show = {};
+    show = stateParams.show;
     var eventGroupings = ['colors', 'text', 'phone'];
     show.events = [];
     show.savedTimelines = {};
@@ -196,13 +196,15 @@ app.factory("ShowFactory", function ($http) {
       }
     })
     show.events = [];
-    show.settings = {};
-    show.name = stateParams.showName;
-    show.settings.bpm = stateParams.bpm;
-    show.song = {
-      name: stateParams.songName,
-      duration: stateParams.songDuration
-    }
+    // show.settings = {};
+    // show.name = stateParams.showName;
+    // show.settings.bpm = stateParams.bpm;
+    // show.song = {
+    //   name: stateParams.songName,
+    //   duration: stateParams.songDuration,
+    //   fileName: stateParams.songFileName
+    // }
+    console.log(stateParams);
 
     return show;
   }

@@ -3,30 +3,95 @@ app.directive('showTemplate', function () {
     templateUrl: '/show.template.directive.html',
     controller: function ($scope, ShowFactory) {
       var numMeasures;
+      var resolution = 8;
       var totalEighthNotes;
+      var audioDuration;
+      $scope.songPlaying = false;
+
+      function createWaveSurfer () {
+
+        $scope.wavesurfer = WaveSurfer.create({
+          container: '#waveform',
+          progressColor: '#1DE9B6',
+          cursorColor: '#FFF',
+          barWidth: 6
+        });
+        $scope.wavesurfer.load('../public/songs/' + $scope.show.song.fileName);
+        $scope.wavesurfer.on('ready', function () {
+          // wavesurfer.play();
+          $scope.songLoaded = true;
+          // audioDuration = $scope.wavesurfer.getDuration();
+        });
+
+      }
+
+      $scope.toggleSong = function () {
+        if (!$scope.songPlaying) {
+          $scope.wavesurfer.play();
+          $scope.songPlaying = true;
+        }
+        else {
+          $scope.wavesurfer.pause();
+          $scope.songPlaying = false;
+        }
+      }
+
+
+
 
       function calculateNumMeasures () {
         //rounding up
-        numMeasures = Math.ceil($scope.song.duration / (240 / $scope.show.settings.bpm));
+        console.log($scope.show);
+        numMeasures = Math.ceil($scope.show.song.duration / (240 / $scope.show.settings.bpm));
         console.log(numMeasures);
         totalEighthNotes = numMeasures * 8;
+        // $scope.timeline
+        $scope.timelineWidth = totalEighthNotes * 17.33;
+      }
+
+      $scope.createTimelinesArray = function (resolution) {
+        $scope.timelinesArray = {
+          colors: {
+            array: Array(numMeasures * resolution),
+            icon: 'color_lens'
+          },
+          text: {
+            array: Array(numMeasures * resolution),
+            icon: 'text_format'
+          },
+          phone: {
+            array: Array(numMeasures * resolution),
+            icon: 'smartphone'
+          }
+        }
       }
 
       calculateNumMeasures();
+      createWaveSurfer();
+      $scope.createTimelinesArray(resolution);
 
-      $scope.timelinesArray = {
-        colors: {
-          array: Array(totalEighthNotes),
-          icon: 'color_lens'
-        },
-        text: {
-          array: Array(totalEighthNotes),
-          icon: 'text_format'
-        },
-        phone: {
-          array: Array(totalEighthNotes),
-          icon: 'smartphone'
+
+
+
+
+      $scope.changeResolution = function (isQuarterResolution) {
+
+        // isQuarterResolution ? scope.data.notesPerMeasure = 4 : scope.data.notesPerMeasure = 8;
+        ShowFactory.changeResolution();
+        $scope.data.notesPerMeasure = ShowFactory.getNotesPerMeasure();
+        $scope.isQuarterResolution = ShowFactory.isQuarterResolution();
+        console.log('scopeQtr', $scope.isQuarterResolution, 'localQtr', isQuarterResolution);
+        if (isQuarterResolution) resolution = 4;
+        else resolution = 8;
+
+        $scope.createTimelinesArray(resolution);
+
+        if ($scope.startingIdx) {
+          $scope.startingIdx = ShowFactory.convertToIdx($scope.newEvent.time, isQuarterResolution);
+          $scope.lastIdx = ShowFactory.convertToIdx($scope.newEvent.endTime, isQuarterResolution);
         }
+
+        console.log($scope.startingIdx, $scope.lastIdx);
       }
 
       $scope.tabs = [
