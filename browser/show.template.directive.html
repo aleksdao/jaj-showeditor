@@ -2,7 +2,7 @@
   <md-title>
     <h1 class="md-display-2" editable-text="show.name"></h1>
   </md-title>
-  <h2 class="md-display-3"><span><md-icon style="font-size:36px;margin-right:10px" md-font-set="material-icons">music_note</md-icon>{{show.song.name}}</span></h2>
+  <h2 class="md-display-3"><span><md-icon class="md-accent" style="font-size:36px;margin-right:10px" md-font-set="material-icons">music_note</md-icon>{{show.song.name}}</span></h2>
   <h3 class="md-headline">{{ show.settings.bpm }} BPM</h3>
 
 
@@ -16,46 +16,56 @@
 <md-switch ng-disabled="false" ng-model="isQuarterResolution" ng-change="changeResolution(isQuarterResolution)">{{ isQuarterResolution ? "quarter note" : "eighth note" }}</md-switch>
 
 <!-- <md-content layout="column"> -->
-  <md-content layout="row"  style="margin:auto;width:{{timelineWidth}}px">
+  <md-content layout="row"  style="margin:auto;width:100%">
     <md-content layout="column">
       <div layout="column" layout-align="center">
         <div style="height:33px" ng-repeat="(eventGrouping, obj) in timelinesArray"><span>{{eventGrouping | uppercase}}<md-icon md-font-set="material-icons">{{ obj.icon }}</md-icon></span></div>
       </div>
-      <div flex></div>
+      <div flex layout-align="center center">
+        <md-button class="md-accent md-raised" ng-click="toggleSong()" ng-disabled="!songLoaded">
+          <md-icon ng-show="!songPlaying" md-font-set="material-icons">play_arrow</md-icon>
+          <md-icon ng-show="songPlaying" md-font-set="material-icons">pause</md-icon>
+        </md-button>
+      </div>
     </md-content>
 
-    <md-content flex>
-      <!-- <md-content layout="row"> -->
+    <md-content flex style="margin:auto;width:{{timelineWidth}}px;border-left:1px solid white;border-right:1px solid white">
 
+      <div class="timelines" style="width:{{timelineWidth}}px;border-right:1px solid black; border-bottom:1px solid white">
 
-
-        <md-content class="timelines" style="border-left:1px solid black;border-right:1px solid black;border-bottom:1px solid black; margin-left:5px" layout="row">
-          <div layout="column">
-            <div layout="row" ng-repeat="(eventGrouping, obj) in timelinesArray">
-              <div style="height:33px" ng-repeat="line in obj.array track by $index" ng-click="selectIdx($index, eventGrouping)"
-                    ng-class="{ 'selected1' : highlightCellOrNot($index, eventGrouping, 'colors'),
-                'selected2' : highlightCellOrNot($index, eventGrouping, 'text'),
-                'selected3' : highlightCellOrNot($index, eventGrouping, 'phone') }"
-                ng-style="(isCurrentTimeline($index, startingIdx, lastIdx, eventGrouping, 'colors') && { 'backgroundColor': newEvent.params.color }) || (isAddedToShow($index, eventGrouping, 'colors') && { 'backgroundColor' : isAddedToShow($index, eventGrouping, 'colors') })">
-                <timeline-directive index="{{$index}}" starting-idx="{{startingIdx}}" last-idx="{{lastIdx}}" event-grouping="{{eventGrouping}}" data="data" notes-per-measure="{{notesPerMeasure}}" height-key="{{getDivHeight($index)}}" width-key="16"></timeline-directive>
-              </div>
+        <div layout="column">
+          <div layout="row" ng-repeat="(eventGrouping, obj) in timelinesArray">
+            <div style="height:33px" ng-repeat="line in obj.array track by $index" ng-click="selectIdx($index, eventGrouping)"
+                  ng-class="{ 'selected1' : highlightCellOrNot($index, eventGrouping, 'colors'),
+              'selected2' : highlightCellOrNot($index, eventGrouping, 'text'),
+              'selected3' : highlightCellOrNot($index, eventGrouping, 'phone') }"
+              ng-style="(isCurrentTimeline($index, startingIdx, lastIdx, eventGrouping, 'colors') && { 'backgroundColor': newEvent.params.color }) || (isAddedToShow($index, eventGrouping, 'colors') && { 'backgroundColor' : isAddedToShow($index, eventGrouping, 'colors') })">
+              <timeline-directive index="{{$index}}" starting-idx="{{startingIdx}}" last-idx="{{lastIdx}}" event-grouping="{{eventGrouping}}" data="data" notes-per-measure="{{notesPerMeasure}}" height-key="{{getDivHeight($index)}}" width-key="16"></timeline-directive>
             </div>
           </div>
-        </md-content>
-        <md-content id="waveform" flex>
-        </md-content>
-      <!-- </md-content> -->
+        </div>
+      </div>
+      <div style="height:20px"></div>
+      <md-content id="waveform" style="width:{{timelineWidth}}px">
+      </md-content>
+
     </md-content>
 
   </md-content>
-  <div class="waveform-buttons">
+
+  <!-- <div class="waveform-buttons">
     <md-button class="md-raised"><md-icon md-font-set="material-icons">play_arrow</md-icon></md-button>
     <md-button class="md-raised"><md-icon md-font-set="material-icons">pause</md-icon></md-button>
-    <md-button><md-icon md-font-set="material-icons">play_circle_outline</md-icon></md-button>
-    <md-button><md-icon md-font-set="material-icons">pause_circle_outline</md-icon></md-button>
-    <md-button><md-icon md-font-set="material-icons">play_circle_filled</md-icon></md-button>
-    <md-button><md-icon md-font-set="material-icons">pause_circle_filled</md-icon></md-button>
-  </div>
+    <md-button class="md-raised"><md-icon md-font-set="material-icons">play_circle_outline</md-icon></md-button>
+    <md-button class="md-raised"><md-icon md-font-set="material-icons">pause_circle_outline</md-icon></md-button>
+    <md-button class="md-raised"><md-icon md-font-set="material-icons">play_circle_filled</md-icon></md-button>
+    <md-button class="md-raised"><md-icon md-font-set="material-icons">pause_circle_filled</md-icon></md-button>
+    <md-button class="md-accent md-raised"><md-icon md-font-set="material-icons">pause</md-icon></md-button>
+    <md-button class="md-accent md-raised"><md-icon md-font-set="material-icons">play_circle_outline</md-icon></md-button>
+    <md-button class="md-accent md-raised"><md-icon md-font-set="material-icons">pause_circle_outline</md-icon></md-button>
+    <md-button class="md-accent md-raised"><md-icon md-font-set="material-icons">play_circle_filled</md-icon></md-button>
+    <md-button class="md-accent md-raised"><md-icon md-font-set="material-icons">pause_circle_filled</md-icon></md-button>
+  </div> -->
 
 
 <!-- </md-content> -->

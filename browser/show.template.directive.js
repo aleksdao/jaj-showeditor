@@ -5,22 +5,39 @@ app.directive('showTemplate', function () {
       var numMeasures;
       var resolution = 8;
       var totalEighthNotes;
+      var audioDuration;
+      $scope.songPlaying = false;
 
       function createWaveSurfer () {
 
-        var wavesurfer = WaveSurfer.create({
+        $scope.wavesurfer = WaveSurfer.create({
           container: '#waveform',
           progressColor: '#1DE9B6',
           cursorColor: '#FFF',
-          maxCanvasWidth: 2000,
-          barWidth: 6,
+          barWidth: 6
         });
-        wavesurfer.load('../public/songs/' + $scope.show.song.fileName);
-        wavesurfer.on('ready', function () {
-          wavesurfer.play();
+        $scope.wavesurfer.load('../public/songs/' + $scope.show.song.fileName);
+        $scope.wavesurfer.on('ready', function () {
+          // wavesurfer.play();
+          $scope.songLoaded = true;
+          // audioDuration = $scope.wavesurfer.getDuration();
         });
 
       }
+
+      $scope.toggleSong = function () {
+        if (!$scope.songPlaying) {
+          $scope.wavesurfer.play();
+          $scope.songPlaying = true;
+        }
+        else {
+          $scope.wavesurfer.pause();
+          $scope.songPlaying = false;
+        }
+      }
+
+
+
 
       function calculateNumMeasures () {
         //rounding up
@@ -66,7 +83,7 @@ app.directive('showTemplate', function () {
         console.log('scopeQtr', $scope.isQuarterResolution, 'localQtr', isQuarterResolution);
         if (isQuarterResolution) resolution = 4;
         else resolution = 8;
-        
+
         $scope.createTimelinesArray(resolution);
 
         if ($scope.startingIdx) {

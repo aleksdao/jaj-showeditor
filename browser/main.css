@@ -108,6 +108,10 @@ md-nav-item {
   width: 90%;
 }*/
 
+.timelines {
+  border-color: #FFF;
+}
+
 div.selected1 {
   background-color: rgb(89, 226, 168);
 }

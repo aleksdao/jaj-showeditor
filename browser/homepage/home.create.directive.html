@@ -20,7 +20,11 @@
       <div ng-messages="showForm.fileUpload.$error" ng-show="!showForm.fileUpload.$pristine" style="color:red">
         <div ng-message="required">This is required.</div>
       </div>
-      <div layout="column" layout-align="center center" ng-show="show.song.name"><button class="md-raised md-primary lf-ng-md-file-input-button md-ink-ripple md-button"><md-icon md-font-set="material-icons">music_note</md-icon>{{show.song.name}}</button></div>
+      <div layout="column" layout-align="center center" ng-show="show.song.name">
+        <button class="md-raised md-primary lf-ng-md-file-input-button md-ink-ripple md-button">
+          <md-icon md-font-set="material-icons">music_note</md-icon>{{show.song.name}}
+        </button>
+      </div>
       <!-- <md-input-container ng-show="song.name">
         <label>Song</label>
         <input type="text" ng-model="song.name">
