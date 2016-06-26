@@ -117,11 +117,13 @@ app.factory("ShowFactory", function ($http) {
     }
     else {
       idx += musicalTime.measures * 8 + musicalTime.quarters * 2 + musicalTime.sixteenths / 2;
+      if (isLastIdx) idx++;
     }
 
     if (isStartingIdx) startingIdx = idx;
     if (isLastIdx) lastIdx = idx;
 
+    // console.log(time)
     return idx;
 
   }
@@ -257,7 +259,7 @@ app.factory("ShowFactory", function ($http) {
   //existing events on timeilne and not to overwrite those
 
   factory.selectIdx = function (idx, checkArrayKey, isQuarterResolution, show) {
-    
+
     if (activeArrayKey !== checkArrayKey) {
       startingIdx = undefined;
       lastIdx = undefined;

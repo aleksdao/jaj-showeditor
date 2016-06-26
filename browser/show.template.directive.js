@@ -99,6 +99,7 @@ app.directive('showTemplate', function () {
 
           $scope.startingIdx = ShowFactory.convertToIdx($scope.newEvent.time, isQuarterResolution, true);
           $scope.lastIdx = ShowFactory.convertToIdx($scope.newEvent.endTime, isQuarterResolution, false, true);
+          console.log($scope.newEvent.time, $scope.newEvent.endTime, $scope.startingIdx, $scope.lastIdx);
 
 
         }
