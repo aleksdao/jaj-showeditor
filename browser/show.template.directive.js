@@ -4,8 +4,9 @@ app.directive('showTemplate', function () {
     controller: function ($scope, ShowFactory) {
       var numMeasures;
       var resolution = 8;
-      var totalEighthNotes;
+      var totalNotes;
       var audioDuration;
+      var width;
       $scope.songPlaying = false;
 
       function createWaveSurfer () {
@@ -44,9 +45,9 @@ app.directive('showTemplate', function () {
         console.log($scope.show);
         numMeasures = Math.ceil($scope.show.song.duration / (240 / $scope.show.settings.bpm));
         console.log(numMeasures);
-        totalEighthNotes = numMeasures * 8;
+        // totalEighthNotes = numMeasures * 8;
         // $scope.timeline
-        $scope.timelineWidth = totalEighthNotes * 17.33;
+        // $scope.timelineWidth = totalEighthNotes * 17.33;
       }
 
       $scope.createTimelinesArray = function (resolution) {
@@ -64,6 +65,15 @@ app.directive('showTemplate', function () {
             icon: 'smartphone'
           }
         }
+        if (resolution === 8) {
+          width = 17.33;
+
+        }
+        else {
+          width = 34.33;
+        }
+        totalNotes = resolution * numMeasures;
+        $scope.timelineWidth = totalNotes * width;
       }
 
       calculateNumMeasures();
@@ -80,18 +90,19 @@ app.directive('showTemplate', function () {
         ShowFactory.changeResolution();
         $scope.data.notesPerMeasure = ShowFactory.getNotesPerMeasure();
         $scope.isQuarterResolution = ShowFactory.isQuarterResolution();
-        console.log('scopeQtr', $scope.isQuarterResolution, 'localQtr', isQuarterResolution);
         if (isQuarterResolution) resolution = 4;
         else resolution = 8;
 
         $scope.createTimelinesArray(resolution);
 
         if ($scope.startingIdx) {
-          $scope.startingIdx = ShowFactory.convertToIdx($scope.newEvent.time, isQuarterResolution);
-          $scope.lastIdx = ShowFactory.convertToIdx($scope.newEvent.endTime, isQuarterResolution);
+
+          $scope.startingIdx = ShowFactory.convertToIdx($scope.newEvent.time, isQuarterResolution, true);
+          $scope.lastIdx = ShowFactory.convertToIdx($scope.newEvent.endTime, isQuarterResolution, false, true);
+
+
         }
 
-        console.log($scope.startingIdx, $scope.lastIdx);
       }
 
       $scope.tabs = [

@@ -104,7 +104,7 @@ app.factory("ShowFactory", function ($http) {
 //Frontend factory functions used to manage
 //the timelines
 
-  factory.convertToIdx = function (time, isQuarterResolution) {
+  factory.convertToIdx = function (time, isQuarterResolution, isStartingIdx, isLastIdx) {
     var idx = 0;
     var nums = time.split(':');
     var musicalTime = {
@@ -118,6 +118,9 @@ app.factory("ShowFactory", function ($http) {
     else {
       idx += musicalTime.measures * 8 + musicalTime.quarters * 2 + musicalTime.sixteenths / 2;
     }
+
+    if (isStartingIdx) startingIdx = idx;
+    if (isLastIdx) lastIdx = idx;
 
     return idx;
 
@@ -254,8 +257,7 @@ app.factory("ShowFactory", function ($http) {
   //existing events on timeilne and not to overwrite those
 
   factory.selectIdx = function (idx, checkArrayKey, isQuarterResolution, show) {
-    // console.log(scope.show);
-    // if (!_newEvent) _newEvent = {};
+    
     if (activeArrayKey !== checkArrayKey) {
       startingIdx = undefined;
       lastIdx = undefined;
@@ -284,7 +286,7 @@ app.factory("ShowFactory", function ($http) {
       }
       startingIdx = idx;
       lastIdx = idx;
-      console.log('here startingidx', startingIdx, 'lastIdx', lastIdx)
+      // console.log('here startingidx', startingIdx, 'lastIdx', lastIdx)
     }
     else if (startingIdx > idx) {
       startingIdx = undefined;
@@ -293,7 +295,7 @@ app.factory("ShowFactory", function ($http) {
       _newEvent.action = undefined;
     }
     else {
-      console.log('get into last else')
+      // console.log('get into last else')
       var iterator = startingIdx;
 
       //collided tracks whether or not the user's click for lastIdx conflicts with an already
@@ -304,14 +306,14 @@ app.factory("ShowFactory", function ($http) {
       var collided = false;
       if (activeArrayKey === 'colors') {
         while (iterator < idx) {
-          console.log('iterator', iterator, 'idx', idx)
+          // console.log('iterator', iterator, 'idx', idx)
           iterator++;
           if (checkThisSavedIdx[iterator]) {
-            console.log('stops here', iterator)
+            // console.log('stops here', iterator)
             collided = true;
             break;
           }
-          console.log('does this get added?', iterator)
+          // console.log('does this get added?', iterator)
         }
       }
       else {
@@ -329,7 +331,7 @@ app.factory("ShowFactory", function ($http) {
 
       if (collided) lastIdx = iterator - 1;
       else lastIdx = iterator;
-      console.log('collided?', collided, 'lastIdx', lastIdx, 'iterator', iterator, 'startingIdx', startingIdx, 'lastIdx', lastIdx)
+      // console.log('collided?', collided, 'lastIdx', lastIdx, 'iterator', iterator, 'startingIdx', startingIdx, 'lastIdx', lastIdx)
 
     }
 
