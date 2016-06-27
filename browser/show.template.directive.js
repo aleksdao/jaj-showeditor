@@ -1,7 +1,7 @@
 app.directive('showTemplate', function () {
   return {
     templateUrl: '/show.template.directive.html',
-    controller: function ($scope, ShowFactory) {
+    controller: function ($scope, ShowFactory, $timeout) {
       var numMeasures;
       var resolution = 8;
       var totalNotes;
@@ -18,9 +18,19 @@ app.directive('showTemplate', function () {
           barWidth: 6
         });
         $scope.wavesurfer.load('../public/songs/' + $scope.show.song.fileName);
+
+        $scope.wavesurfer.on('loading', function (percent) {
+          $scope.loading = percent;
+          console.log(percent);
+
+        })
         $scope.wavesurfer.on('ready', function () {
           // wavesurfer.play();
-          $scope.songLoaded = true;
+          $timeout(function () {
+            $scope.songLoaded = true;
+            $scope.$digest();
+          }, 500);
+          // $scope.songLoaded = true;
           // audioDuration = $scope.wavesurfer.getDuration();
         });
 
@@ -127,19 +137,27 @@ app.directive('showTemplate', function () {
 
       $scope.isAddedToShow = function (currentIdx, eventGrouping, matchThis) {
 
-        if (eventGrouping === 'colors' && matchThis === 'colors') {
+        if ((eventGrouping === 'colors') || (eventGrouping === 'text')) {
           return ($scope.isQuarterResolution ?
             $scope.show.savedTimelines[eventGrouping].savedQuartersIdx[currentIdx] :
             $scope.show.savedTimelines[eventGrouping].savedEighthsIdx[currentIdx]
           );
         }
-        else if (eventGrouping === matchThis) {
+        else {
           return ($scope.isQuarterResolution ?
-            $scope.show.savedTimelines[eventGrouping].savedQuartersIdx.indexOf(currentIdx) >=0 :
-            $scope.show.savedTimelines[eventGrouping].savedEighthsIdx.indexOf(currentIdx) >=0
+            $scope.show.savedTimelines[eventGrouping].savedQuartersIdx.indexOf(currentIdx) >= 0 :
+            $scope.show.savedTimelines[eventGrouping].savedEighthsIdx.indexOf(currentIdx) >= 0
           )
         }
       }
+
+      $scope.$watch('activeArrayKey', function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+          $scope.newEvent.action = null;
+          $scope.newEvent.params = null;
+          // if ($scope.newEvent.action)
+        }
+      })
 
       $scope.highlightCellOrNot = function (currentIdx, eventGrouping, matchThis) {
         return $scope.isCurrentTimeline(currentIdx, $scope.startingIdx, $scope.lastIdx, eventGrouping, matchThis) || $scope.isAddedToShow(currentIdx, eventGrouping, matchThis);

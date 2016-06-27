@@ -9,5 +9,5 @@
     <!-- <p>Selected Show: <span class="radioValue"> {{ show.selected.name }}</span></p> -->
     <md-radio-button ng-repeat="show in shows" ng-value="show">{{show.name}}</md-radio-button>
   </md-radio-group>
-  <md-button class="md-accent" ui-sref="editShow({ id: show.selected._id })">Open Show</md-button>
+  <md-button ng-disabled="!show" style="margin-top:20px;margin-left:55px;margin-right:55px" class="md-accent md-raised" ui-sref="editShow({ id: show.selected._id })">Open Show</md-button>
 </md-content>

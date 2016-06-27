@@ -1,23 +1,5 @@
 app.config(function ($stateProvider) {
   $stateProvider
-    // .state('home', {
-    //   url:'/',
-    //   templateUrl: '/home.html',
-    //   resolve: {
-    //     shows: function (ShowFactory) {
-    //       return ShowFactory.getShows();
-    //     }
-    //   },
-    //   controller: function ($scope, shows, ShowFactory) {
-    //
-    //     $scope.options = ['Create New', 'Open'];
-    //     $scope.shows = shows;
-    //     $scope.makeActive = function (idx) {
-    //       $scope.activeIdx = idx;
-    //     }
-    //
-    //   }
-    // })
     .state('createShow', {
       url: '/shows/create',
       templateUrl: '/show.new.state.html',

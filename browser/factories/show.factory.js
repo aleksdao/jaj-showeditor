@@ -39,22 +39,58 @@ app.factory("ShowFactory", function ($http) {
     }
   }
 
+  var colorParams = {
+    params: ['color']
+  }
+
   var actionsObj = {
     changeColorTo: {
       label: 'Change Color',
-      params: ['color']
+      params: [{
+          name: 'color',
+          reqColorPicker: true
+        }]
     },
     fadeColorTo: {
       label: 'Fade Color To',
-      params: ['color', 'transitionTime', 'preload']
+      params: [{
+          name: 'color',
+          reqColorPicker: true
+        },
+        {
+          name: 'transitionTime',
+          reqColorPicker: false
+        },
+        {
+          name: 'preload',
+          reqColorPicker: false
+        }]
     },
     changeTextTo: {
       label: 'Change Text',
-      params: ['text', 'color', 'target']
+      params: [{
+          name: 'text',
+          reqColorPicker: false
+        },
+        {
+          name: 'color',
+          reqColorPicker: true
+        },
+        {
+          name: 'target',
+          reqColorPicker: false
+        }]
     },
     resetScreen: {
       label: 'Reset Screen',
-      params: ['text', 'color', 'backgroundColor']
+      params: [{
+          name: 'text',
+          reqColorPicker: false
+        },
+        {
+          name: 'color',
+          reqColorPicker: true
+        }]
     },
     flash: {
       label: 'Flash'
@@ -280,7 +316,7 @@ app.factory("ShowFactory", function ($http) {
 
 
     if (startingIdx === undefined) {
-      if (activeArrayKey === 'colors') {
+      if (activeArrayKey === 'colors' || activeArrayKey === 'text') {
         if (checkThisSavedIdx[idx]) return;
       }
       else {
@@ -306,7 +342,7 @@ app.factory("ShowFactory", function ($http) {
 
 
       var collided = false;
-      if (activeArrayKey === 'colors') {
+      if (activeArrayKey === 'colors' || activeArrayKey === 'text') {
         while (iterator < idx) {
           // console.log('iterator', iterator, 'idx', idx)
           iterator++;
@@ -402,14 +438,14 @@ app.factory("ShowFactory", function ($http) {
       lastEighthIdx = newEvent.lastIdx;
     }
 
-    if (newEvent.activeArrayKey === 'colors') {
+    if (newEvent.activeArrayKey === 'colors' || newEvent.activeArrayKey === 'text') {
       for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
-        show.savedTimelines.colors.savedQuartersIdx[i] = newEvent.params.color;
+        show.savedTimelines[activeArrayKey].savedQuartersIdx[i] = newEvent.params.color;
       }
       for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
         // console.log(j);
-        show.savedTimelines.colors.savedEighthsIdx[j] = newEvent.params.color;
-        console.log(j, show.savedTimelines.colors.savedEighthsIdx[j]);
+        show.savedTimelines[activeArrayKey].savedEighthsIdx[j] = newEvent.params.color;
+        console.log(j, show.savedTimelines[activeArrayKey].savedEighthsIdx[j]);
       }
     }
     else {
@@ -465,14 +501,14 @@ app.factory("ShowFactory", function ($http) {
       lastEighthIdx = event.lastIdx;
     }
 
-    if (event.eventGrouping === 'colors') {
+    if (event.eventGrouping === 'colors' || event.eventGrouping === 'text') {
       for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
-        show.savedTimelines.colors.savedQuartersIdx[i] = null;
+        show.savedTimelines[activeArrayKey].savedQuartersIdx[i] = null;
       }
       for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
         // console.log(j);
-        show.savedTimelines.colors.savedEighthsIdx[j] = null;
-        console.log(j, show.savedTimelines.colors.savedEighthsIdx[j]);
+        show.savedTimelines[activeArrayKey].savedEighthsIdx[j] = null;
+        console.log(j, show.savedTimelines[activeArrayKey].savedEighthsIdx[j]);
       }
     }
     else {

@@ -7,6 +7,8 @@ app.directive('eventInputs', function (NgTableParams, ShowFactory) {
       // var data = scope.show.events;
       // self.tableParams = new NgTableParams({}, { dataset: data });
 
+  
+
       scope.data.notesPerMeasure = 8;
 
       scope.eventGroupings = ShowFactory.getEventGroupings();
@@ -34,6 +36,13 @@ app.directive('eventInputs', function (NgTableParams, ShowFactory) {
             console.log('created show', show);
             return show;
           })
+      }
+
+      scope.selectRandomColor = function (paramName) {
+        scope.newEvent.params = {};
+        scope.newEvent.params[paramName] = '#' + Math.floor(Math.random() * 16777215).toString(16).toUpperCase();
+
+        console.log(scope.newEvent.params);
       }
 
       // NEED TO REVISIT. ACCOUNT FOR EIGHTHTS SWITCHING TO QTR NOTES
