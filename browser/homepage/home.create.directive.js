@@ -1,7 +1,7 @@
 app.directive('homeCreate', function () {
   return {
     templateUrl: '/homepage/home.create.directive.html',
-    controller: function ($scope) {
+    controller: function ($scope, $state) {
       // var audioElem = angular.element(document.querySelector('#audio'));
       $scope.song = {};
       $scope.show = {
@@ -37,6 +37,11 @@ app.directive('homeCreate', function () {
         })
 
       })
+
+      $scope.goToTimelines = function () {
+        $state.go('createShow', { show: $scope.show });
+        $scope.disableSidebar = true;
+      }
 
 
       // audio.src = ''
