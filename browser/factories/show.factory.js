@@ -503,12 +503,12 @@ app.factory("ShowFactory", function ($http) {
 
     if (event.eventGrouping === 'colors' || event.eventGrouping === 'text') {
       for (var i = startingQuarterIdx; i <= lastQuarterIdx; i++) {
-        show.savedTimelines[activeArrayKey].savedQuartersIdx[i] = null;
+        show.savedTimelines[event.activeArrayKey].savedQuartersIdx[i] = null;
       }
       for (var j = startingEighthIdx; j <= lastEighthIdx; j++) {
         // console.log(j);
-        show.savedTimelines[activeArrayKey].savedEighthsIdx[j] = null;
-        console.log(j, show.savedTimelines[activeArrayKey].savedEighthsIdx[j]);
+        show.savedTimelines[event.activeArrayKey].savedEighthsIdx[j] = null;
+        console.log(j, show.savedTimelines[event.activeArrayKey].savedEighthsIdx[j]);
       }
     }
     else {
