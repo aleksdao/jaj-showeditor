@@ -1,7 +1,7 @@
   <md-content style="margin:auto;width:90%;padding-left:10px">
   <div layout="column">
-    <p ng-show="newEvent.time">Event Start Time: {{newEvent.time}}</p>
-    <p ng-show="newEvent.endTime">Event End Time: {{newEvent.endTime}}</p>
+    <h3 class="md-title" ng-show="newEvent.time">Event Start Time: {{newEvent.time}}</h3>
+    <h3 class="md-title" ng-show="newEvent.endTime">Event End Time: {{newEvent.endTime}}</h3>
     <!-- <div ng-show="!activeArrayKey">Click the timeline again to add another event</div> -->
     <form name="newEventForm" ng-show="activeArrayKey">
 
@@ -24,7 +24,7 @@
               md-color-generic-palette="false"
               md-color-history="false">
         </div>
-        <md-button class="md-raised" ng-click="selectRandomColor(param.name)">Select Random Color</md-button>
+        <md-button style="margin-top:15px;margin-bottom:45px" class="md-raised" ng-click="selectRandomColor(param.name)">Select Random Color</md-button>
       </div>
       <!-- <div ng-click="randomColor()" flex>
       </div> -->
