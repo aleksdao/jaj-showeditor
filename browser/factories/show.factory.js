@@ -26,15 +26,15 @@ app.factory("ShowFactory", function ($http) {
 
   var eventGroupings = {
     colors: {
-      actions: ['changeColorTo', 'fadeColorTo'],
+      actions: ['changeColor', 'fadeColorTo'],
       label: 'Colors'
     },
     text: {
-      actions: ['changeTextTo', 'resetScreen'],
+      actions: ['changeText', 'resetScreen'],
       label: 'Text'
     },
     phone: {
-      actions: ['flash', 'vibrate'],
+      actions: ['strobeFlash', 'vibrate'],
       label: 'Phone'
     }
   }
@@ -44,7 +44,7 @@ app.factory("ShowFactory", function ($http) {
   }
 
   var actionsObj = {
-    changeColorTo: {
+    changeColor: {
       label: 'Change Color',
       params: [{
           name: 'color',
@@ -66,7 +66,7 @@ app.factory("ShowFactory", function ($http) {
           reqColorPicker: false
         }]
     },
-    changeTextTo: {
+    changeText: {
       label: 'Change Text',
       params: [{
           name: 'text',
@@ -92,7 +92,7 @@ app.factory("ShowFactory", function ($http) {
           reqColorPicker: true
         }]
     },
-    flash: {
+    strobeFlash: {
       label: 'Flash'
     },
     vibrate: {

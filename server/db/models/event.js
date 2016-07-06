@@ -12,7 +12,7 @@ var eventSchema = mongoose.Schema({
   },
   action: {
     type: String,
-    enum: ['fadeColorTo', 'changeColorTo', 'changeTextTo', 'resetScreen', 'vibrate', 'flash']
+    enum: ['fadeColorTo', 'changeColor', 'changeText', 'resetScreen', 'vibrate', 'strobeFlash']
   },
   params: {
     type: Object
