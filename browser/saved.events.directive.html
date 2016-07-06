@@ -31,14 +31,14 @@
           <div flex="33"><h3 class="md-title">End Time</h3></div>
           <div flex><h3 class="md-title">Action</h3></div>
         </div>
-        <div layout="row" ng-repeat="event in show.events" ng-click="removeEvent($index)">
-          <div flex="33"><h3 class="md-subhead">{{event.time}}</h3></div>
-          <div flex="33"><h3 class="md-subhead">{{event.endTime}}</h3></div>
-          <div flex><h3 class="md-subhead">{{actionsObj[event.action].label}}</h3></div>
+        <div layout="row" style="height:30px" ng-repeat="event in show.events" ng-click="removeEvent($index)">
+          <div flex="33"><h3 class="md-title">{{event.time}}</h2></div>
+          <div flex="33"><h3 class="md-title">{{event.endTime}}</h2></div>
+          <div flex><h3 class="md-title">{{actionsObj[event.action].label}}</h2></div>
         </div>
       </div>
 
-      <form name="createShowForm">
+      <form style="margin-top:20px" name="createShowForm">
         <!-- <md-input-container name="showName">
           <label>Show Name</label>
           <input ng-model="show.name" required>
